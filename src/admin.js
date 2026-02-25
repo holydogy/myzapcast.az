@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function showAdminPanel() {
         if (loginSection) loginSection.style.display = 'none';
         if (adminLayout) adminLayout.style.display = 'flex';
+
+        // Məlumatları yeniləyirik (Səhifəni yeniləmədən dəyişiklikləri görmək üçün)
+        users = JSON.parse(localStorage.getItem('users')) || [];
+        ads = JSON.parse(localStorage.getItem('ads')) || [];
+
         updateStats();
         renderAds();
         renderUsers();
@@ -77,11 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             section === 'users' ? 'İstifadəçilər' :
                                 section === 'categories' ? 'Kateqoriyalar' : 'Ayarlar';
                 }
-                if (pageSubtitle) {
-                    pageSubtitle.textContent = section === 'dashboard' ? 'Sistemin ümumi vəziyyəti' :
-                        section === 'ads' ? 'Elanların idarə edilməsi' :
-                            section === 'users' ? 'İstifadəçi bazası' :
-                                section === 'categories' ? 'Kateqoriya tənzimləmələri' : 'Təhlükəsizlik';
+
+                // Məlumatları hər keçiddə təzələyirik
+                if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                    users = JSON.parse(localStorage.getItem('users')) || [];
+                    ads = JSON.parse(localStorage.getItem('ads')) || [];
+                    renderAds();
+                    renderUsers();
+                    updateStats();
                 }
             }
         });
@@ -118,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${user.id}</td>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
+                <td style="font-family: monospace; letter-spacing: 2px;">•••••••• <i class="fa-solid fa-eye-slash" style="font-size: 11px; cursor: help;" title="Şifrə təhlükəsizlik üçün gizlədilib"></i></td>
                 <td class="actions">
                     <button class="btn-action btn-delete" onclick="deleteUser(${user.id})"><i class="fa-solid fa-user-slash"></i></button>
                 </td>
@@ -142,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('stat-pending-ads').textContent = pendingAds;
     }
 
-    // CRUD Funksiyaları
     window.deleteAd = (id) => {
         if (confirm('Bu elanı silmək istəyirsiniz?')) {
             ads = ads.filter(a => a.id !== id);
@@ -159,11 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderUsers();
             updateStats();
         }
-    };
-
-    window.editAd = (id) => {
-        // Redaktə məntiqi modal vasitəsilə...
-        alert('Redaktə funksiyası tezliklə aktiv olacaq.');
     };
 
     function saveToStorage() {
