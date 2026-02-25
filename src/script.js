@@ -1,7 +1,31 @@
 // Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 0. LocalStorage-dan elanları yükləyib göstərmək (Admin panel ilə sinxronizasiya)
+    // 0. İstifadəçi Girişi və Header Yenilənməsi
+    const updateHeaderAuth = () => {
+        const authContainer = document.querySelector('.auth-buttons');
+        if (!authContainer) return;
+
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        if (currentUser) {
+            authContainer.innerHTML = `
+                <div class="user-profile-info" style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 13px; font-weight: 700;">${currentUser.name}</span>
+                    <button id="user-logout" class="btn-login" style="border: none; background: none; cursor: pointer; padding: 0.5rem 1rem;">Çıxış</button>
+                </div>
+            `;
+
+            document.getElementById('user-logout').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                location.reload();
+            });
+        }
+    };
+
+    updateHeaderAuth();
+
+    // 0.1 LocalStorage-dan elanları yükləyib göstərmək (Admin panel ilə sinxronizasiya)
     const renderAds = () => {
         const adsContainer = document.querySelector('.ads-grid');
         if (!adsContainer) return;
@@ -9,14 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bazarımızda olan elanları alırıq
         const storedAds = JSON.parse(localStorage.getItem('ads')) || [
             { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-            { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-            { id: 3, title: 'Hyundai Accent Arxa Stop', price: 80, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'pending' }
+            { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
         ];
 
-        // Konteyneri təmizləyirik ki, dublikat olmasın
         adsContainer.innerHTML = '';
 
-        // Csəhifədə yalnız "active" olanları göstəririk
         const activeAds = storedAds.filter(ad => ad.status === 'active');
 
         if (activeAds.length === 0) {
@@ -24,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Elanları əks ardıcıllıqla (yeni olanlar yuxarıda) göstəririk
         activeAds.reverse().forEach(ad => {
             const adHTML = `
                 <article class="product-card">
@@ -110,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
 
-    // Dinamik gələn elementləri izləmək üçün vaxtaşırı yoxlaya bilərik və ya render sonrası qoşa bilərik
     const observeCards = () => {
         document.querySelectorAll('.product-card').forEach(card => revealObserver.observe(card));
     };
