@@ -145,17 +145,48 @@ body {
     color: white;
 }
 
-.user-profile-badge {
+/* --- Auth Buttons (StuDeal Style) --- */
+.auth-buttons {
     display: flex;
+    gap: 0.75rem;
     align-items: center;
-    gap: 0.5rem;
-    background: #f3f4f6;
-    padding: 0.5rem 1rem;
+    background: #f1f5f9;
+    padding: 0.4rem;
     border-radius: var(--radius-full);
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
 }
+
+.btn-login {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-full);
+    transition: var(--transition);
+}
+
+.btn-login:hover {
+    background: white;
+    color: var(--primary);
+}
+
+.btn-register {
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 800;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
+}
+
+.btn-register:hover {
+    background: #111827;
+    transform: translateY(-1px);
+}
+
 
 /* --- Hero Section (StuDeal Style) --- */
 .hero {
@@ -288,8 +319,10 @@ body {
 /* --- Hero Reveal Animation --- */
 .hero-reveal-item {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(30px) translateZ(0);
+    /* translateZ(0) added for GPU acceleration and smoothness */
+    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
 }
 
 .hero-reveal-item.revealed {
@@ -297,14 +330,14 @@ body {
     transform: translateY(0);
 }
 
-/* --- Category Navigation Bar --- */
+/* --- Category Navigation Bar (Fix Overlap) --- */
 .category-nav-bar {
     background: white;
-    padding: 2rem 0;
-    border-bottom: 1px solid #f3f4f6;
-    position: sticky;
-    top: 80px;
-    z-index: 900;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+    position: relative;
+    /* Fixed overlap by using relative instead of sticky */
+    z-index: 10;
 }
 
 .category-items {
@@ -597,41 +630,7 @@ body {
         display: flex;
     }
 
-    /* --- Auth Buttons --- */
-    .auth-buttons {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
 
-    .btn-login {
-        color: var(--text-main);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
-        transition: var(--transition);
-    }
-
-    .btn-login:hover {
-        color: var(--primary);
-    }
-
-    .btn-register {
-        background: var(--primary);
-        color: white;
-        text-decoration: none;
-        padding: 0.6rem 1.25rem;
-        border-radius: var(--radius-full);
-        font-size: 14px;
-        font-weight: 700;
-        transition: var(--transition);
-    }
-
-    .btn-register:hover {
-        background: #111827;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
-    }
 
     .mobile-menu-toggle {
         display: flex;
