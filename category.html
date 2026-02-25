@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kateqoriya - MYZAPCAST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <header class="top-nav">
+        <div class="container top-nav-container">
+            <a href="/" class="logo">MYZAPCAST</a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Ana Səhifə</a>
+                <a href="/parts.html" class="nav-link">Ehtiyat Hissələri</a>
+                <a href="/shops.html" class="nav-link">Mağazalar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 4rem 2rem;">
+        <h1 id="cat-title" style="font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem;">Kateqoriya</h1>
+
+        <div class="ads-grid">
+            <!-- Bu hissə script vasitəsilə filtr olunub göstərilə bilər -->
+            <p style="color: var(--text-muted);">Bu bölmə üzrə elanlar tezliklə əlavə olunacaq...</p>
+        </div>
+    </main>
+
+    <script type="module" src="/src/script.js"></script>
+    <script>
+        // Səhifə başlığını URL-ə görə dəyişmək üçün kiçik script
+        const path = window.location.pathname;
+        const title = document.getElementById('cat-title');
+        if (path.includes('parts')) title.innerText = 'Ehtiyat Hissələri';
+        if (path.includes('cars')) title.innerText = 'Avtomobillər';
+        if (path.includes('equipment')) title.innerText = 'Xüsusi Texnika';
+        if (path.includes('tires')) title.innerText = 'Təkərlər';
+        if (path.includes('oils')) title.innerText = 'Yağlar';
+        if (path.includes('accessories')) title.innerText = 'Aksesuarlar';
+    </script>
+</body>
+
+</html>

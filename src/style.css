@@ -297,6 +297,75 @@ body {
     transform: translateY(0);
 }
 
+/* --- Category Navigation Bar --- */
+.category-nav-bar {
+    background: white;
+    padding: 2rem 0;
+    border-bottom: 1px solid #f3f4f6;
+    position: sticky;
+    top: 80px;
+    z-index: 900;
+}
+
+.category-items {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.category-items::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+.cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    min-width: 100px;
+    transition: var(--transition);
+}
+
+.cat-icon {
+    width: 60px;
+    height: 60px;
+    background: #f9fafb;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+.cat-item span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.cat-item:hover .cat-icon {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(26, 86, 219, 0.15);
+}
+
+.cat-item:hover span {
+    color: var(--primary);
+}
+
+.ad-post-btn .cat-icon {
+    border: 2px dashed var(--primary);
+}
+
 .trending-tags {
     display: flex;
     justify-content: center;
@@ -526,6 +595,42 @@ body {
 
     .nav-links.active {
         display: flex;
+    }
+
+    /* --- Auth Buttons --- */
+    .auth-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .btn-login {
+        color: var(--text-main);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+
+    .btn-login:hover {
+        color: var(--primary);
+    }
+
+    .btn-register {
+        background: var(--primary);
+        color: white;
+        text-decoration: none;
+        padding: 0.6rem 1.25rem;
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+
+    .btn-register:hover {
+        background: #111827;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
     }
 
     .mobile-menu-toggle {

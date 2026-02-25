@@ -6,35 +6,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const adsContainer = document.querySelector('.ads-grid');
         if (!adsContainer) return;
 
-        // Bazarımızda olan elanları alırıq (yoxdursa default olaraq boş massiv)
-        const storedAds = JSON.parse(localStorage.getItem('ads')) || [];
+        // Bazarımızda olan elanları alırıq
+        const storedAds = JSON.parse(localStorage.getItem('ads')) || [
+            { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+            { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+            { id: 3, title: 'Hyundai Accent Arxa Stop', price: 80, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'pending' }
+        ];
 
-        // Əgər yeni elanlar varsa, onları göstəririk
-        if (storedAds.length > 0) {
-            // Əvvəlki nümunələri tam silmirik ki, sayt boş görünməsin, 
-            // Amma real datanı əvvələ əlavə edirik
-            storedAds.reverse().forEach(ad => {
-                const adHTML = `
-                    <article class="product-card">
-                        <div class="product-img-wrapper">
-                            <img src="${ad.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop'}" 
-                                 alt="${ad.title}" class="product-img">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-price">${ad.price} ₼</div>
-                            <h3 class="product-name">${ad.title}</h3>
-                            <div class="product-footer">
-                                <span class="loc">Bakı, bugün</span>
-                                <button class="btn-call-cirle">
-                                    <i class="fa-solid fa-phone"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                `;
-                adsContainer.insertAdjacentHTML('afterbegin', adHTML);
-            });
+        // Konteyneri təmizləyirik ki, dublikat olmasın
+        adsContainer.innerHTML = '';
+
+        // Csəhifədə yalnız "active" olanları göstəririk
+        const activeAds = storedAds.filter(ad => ad.status === 'active');
+
+        if (activeAds.length === 0) {
+            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
+            return;
         }
+
+        // Elanları əks ardıcıllıqla (yeni olanlar yuxarıda) göstəririk
+        activeAds.reverse().forEach(ad => {
+            const adHTML = `
+                <article class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="${ad.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop'}" 
+                             alt="${ad.title}" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-price">${ad.price} ₼</div>
+                        <h3 class="product-name">${ad.title}</h3>
+                        <div class="product-footer">
+                            <span class="loc">Bakı, bugün</span>
+                            <button class="btn-call-cirle">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+            adsContainer.insertAdjacentHTML('beforeend', adHTML);
+        });
     };
 
     renderAds();
@@ -65,8 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Mouse Parallax (Kartlar üçün 3D Effekt)
-    // Dinamik əlavə olunan kartlar üçün event delegation istifadə edirik
+    // 3. Mouse Parallax (Card Rotation) - Event Delegation
     document.addEventListener('mousemove', (e) => {
         const card = e.target.closest('.product-card');
         if (!card) return;
@@ -91,8 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Scroll Reveal
-    const revealElements = document.querySelectorAll('.product-card');
+    // 4. Scroll Reveal Observer
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -101,9 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
 
-    revealElements.forEach(el => revealObserver.observe(el));
+    // Dinamik gələn elementləri izləmək üçün vaxtaşırı yoxlaya bilərik və ya render sonrası qoşa bilərik
+    const observeCards = () => {
+        document.querySelectorAll('.product-card').forEach(card => revealObserver.observe(card));
+    };
+    observeCards();
 
-    // 5. Zəng Et düyməsi
+    // 5. Zəng Et düyməsi - Event Delegation
     document.addEventListener('click', (e) => {
         if (e.target.closest('.btn-call-cirle')) {
             e.preventDefault();
