@@ -12,7 +12,12 @@
     <link rel="stylesheet" href="src/admin.css"> <!-- Admin CSS-i auth formaları üçün təkrar istifadə edirik -->
 </head>
 
-<body style="background: #f8fafc;">
+<body style="background: #f8fafc; overflow: hidden;">
+    <!-- Parallax Background Elements -->
+    <div class="parallax-blob blob-1"></div>
+    <div class="parallax-blob blob-2"></div>
+    <div class="parallax-blob blob-3"></div>
+
     <div class="auth-container">
         <div class="auth-card">
             <div style="text-align: center; margin-bottom: 2rem;">
@@ -24,8 +29,8 @@
 
             <form id="user-login-form">
                 <div class="form-group">
-                    <label>E-poçt və ya İstifadəçi adı</label>
-                    <input type="text" id="login-email" class="form-input" placeholder="nümunə@mail.com" required>
+                    <label>E-poçt</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="numune@gmail.com" required>
                 </div>
                 <div class="form-group">
                     <label>Şifrə</label>
@@ -47,6 +52,18 @@
     </div>
 
     <script>
+        // Parallax Effect for Auth Pages
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.parallax-blob');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 30;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+
         document.getElementById('user-login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
