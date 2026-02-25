@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MYZAPCAST.AZ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/admin.css">
+</head>
+
+<body>
+
+    <!-- Login Section -->
+    <div id="login-section" class="auth-container">
+        <div class="auth-card">
+            <h2 style="margin-bottom: 0.5rem; text-align: center;">Xoş Gəlmisiniz 👋</h2>
+            <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Admin panelə daxil olun</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>İstifadəçi adı</label>
+                    <input type="text" id="admin-user" class="form-input" placeholder="admin" required>
+                </div>
+                <div class="form-group">
+                    <label>Şifrə</label>
+                    <input type="password" id="admin-pass" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Daxil ol</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel Layout -->
+    <div id="admin-layout" class="admin-layout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">MYZAPCAST</a>
+
+            <nav class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="ads">
+                        <i class="fa-solid fa-list"></i> Elanlar
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="categories">
+                        <i class="fa-solid fa-tags"></i> Kateqoriyalar
+                    </a>
+                </li>
+            </nav>
+
+            <a href="#" id="logout-btn" class="nav-link btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Çıxış
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-title">
+                    <h1 id="page-title">Dashboard</h1>
+                    <p id="page-subtitle">Sistemin ümumi vəziyyəti</p>
+                </div>
+                <div class="user-profile">
+                    <div class="user-info" style="text-align: right;">
+                        <div style="font-weight: 600;">Admin</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Administrator</div>
+                    </div>
+                    <div class="user-avatar">A</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div id="section-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5;">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                        <div class="stat-title">Ümumi Elanlar</div>
+                        <div class="stat-value" id="stat-total-ads">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-title">Aktiv Elanlar</div>
+                        <div class="stat-value" id="stat-active-ads">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="stat-title">Gözləyən Elanlar</div>
+                        <div class="stat-value" id="stat-pending-ads">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ads Management Content -->
+            <div id="section-ads" style="display: none;">
+                <div class="data-table-container">
+                    <div class="table-header">
+                        <h2>Elanların Siyahısı</h2>
+                        <button id="add-ad-btn" class="btn-primary">+ Yeni Elan</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Şəkil</th>
+                                <th>Başlıq</th>
+                                <th>Qiymət</th>
+                                <th>Status</th>
+                                <th>Əməliyyatlar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ads-table-body">
+                            <!-- JS ilə doldurulacaq -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Ad Modal -->
+    <div id="ad-modal" class="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title" style="margin-bottom: 1.5rem;">Yeni Elan</h2>
+            <form id="ad-form">
+                <input type="hidden" id="ad-id">
+                <div class="form-group">
+                    <label>Başlıq</label>
+                    <input type="text" id="ad-title" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Qiymət (₼)</label>
+                    <input type="number" id="ad-price" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Şəkil URL</label>
+                    <input type="url" id="ad-image" class="form-input" required placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="ad-status" class="form-input">
+                        <option value="active">Aktiv</option>
+                        <option value="pending">Gözləyir</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn-action" style="flex: 1; background: #f1f5f9;"
+                        id="cancel-modal">Ləğv et</button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">Yadda saxla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="src/admin.js"></script>
+</body>
+
+</html>
