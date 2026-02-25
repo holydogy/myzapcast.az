@@ -27,14 +27,16 @@
             <h2 style="margin-bottom: 0.5rem; text-align: center;">Xoş Gəldiniz 👋</h2>
             <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Hesabınıza daxil olun</p>
 
-            <form id="user-login-form">
+            <form id="user-login-form" autocomplete="off">
                 <div class="form-group">
                     <label>E-poçt</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="numune@gmail.com" required>
+                    <input type="email" id="login-email" class="form-input" placeholder="numune@gmail.com" required
+                        autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label>Şifrə</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required
+                        autocomplete="new-password">
                     <div style="text-align: right; margin-top: 0.5rem;">
                         <a href="/forgot-password.html"
                             style="font-size: 13px; color: var(--primary); text-decoration: none;">Şifrəni
