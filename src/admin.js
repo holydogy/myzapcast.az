@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const logoutBtn = document.getElementById('logout-btn');
 
+    // Modal elements
+    const adModal = document.getElementById('ad-modal');
+    const adForm = document.getElementById('ad-form');
+    const addAdBtn = document.getElementById('add-ad-btn');
+    const cancelModal = document.getElementById('cancel-modal');
+    const modalTitle = document.getElementById('modal-title');
+
     // Admin Giriş Formu
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
@@ -37,6 +44,71 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             localStorage.removeItem('isAdminLoggedIn');
             window.location.href = '/';
+        });
+    }
+
+    // Modal Control
+    if (addAdBtn) {
+        addAdBtn.addEventListener('click', () => {
+            modalTitle.textContent = 'Yeni Elan';
+            adForm.reset();
+            document.getElementById('ad-id').value = '';
+            adModal.style.display = 'flex';
+        });
+    }
+
+    if (cancelModal) {
+        cancelModal.addEventListener('click', () => {
+            adModal.style.display = 'none';
+        });
+    }
+
+    // Save Ad (Add or Edit)
+    if (adForm) {
+        adForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('ad-id').value;
+            const title = document.getElementById('ad-title').value;
+            const price = document.getElementById('ad-price').value;
+            const image = document.getElementById('ad-image').value;
+            const status = document.getElementById('ad-status').value;
+
+            if (id) {
+                // Edit existing
+                const index = ads.findIndex(a => a.id == id);
+                if (index !== -1) {
+                    ads[index] = { ...ads[index], title, price, image, status };
+                }
+            } else {
+                // Add new
+                const newAd = {
+                    id: Date.now(),
+                    title,
+                    price,
+                    image,
+                    status
+                };
+                ads.push(newAd);
+            }
+
+            saveToStorage();
+            renderAds();
+            updateStats();
+            adModal.style.display = 'none';
+        });
+    }
+
+    // Settings Submit
+    const settingsForm = document.getElementById('settings-form');
+    if (settingsForm) {
+        settingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newUser = document.getElementById('new-admin-user').value;
+            const newPass = document.getElementById('new-admin-pass').value;
+
+            adminCreds = { user: newUser, pass: newPass };
+            localStorage.setItem('adminCreds', JSON.stringify(adminCreds));
+            alert('Admin məlumatları yeniləndi!');
         });
     }
 
@@ -151,6 +223,20 @@ document.addEventListener('DOMContentLoaded', () => {
             span.style.letterSpacing = '2px';
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
+    };
+
+    window.editAd = (id) => {
+        const ad = ads.find(a => a.id == id);
+        if (!ad) return;
+
+        modalTitle.textContent = 'Elanı Redaktə Et';
+        document.getElementById('ad-id').value = ad.id;
+        document.getElementById('ad-title').value = ad.title;
+        document.getElementById('ad-price').value = ad.price;
+        document.getElementById('ad-image').value = ad.image;
+        document.getElementById('ad-status').value = ad.status;
+
+        adModal.style.display = 'flex';
     };
 
     function updateStats() {
