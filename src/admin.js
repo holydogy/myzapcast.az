@@ -7,7 +7,7 @@ let ads = JSON.parse(localStorage.getItem('ads')) || [
 ];
 
 // Admin login məlumatlarını yadda saxlayırıq
-let adminCreds = JSON.parse(localStorage.getItem('adminCreds')) || { user: 'admin', pass: '1234' };
+let adminCreds = JSON.parse(localStorage.getItem('adminCreds')) || { user: 'admin', pass: 'toghruladmin123' };
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('login-section');
