@@ -53,6 +53,11 @@
                         <i class="fa-solid fa-tags"></i> Kateqoriyalar
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="settings">
+                        <i class="fa-solid fa-gear"></i> Ayarlar
+                    </a>
+                </li>
             </nav>
 
             <a href="#" id="logout-btn" class="nav-link btn-logout">
@@ -124,6 +129,25 @@
                             <!-- JS ilə doldurulacaq -->
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div id="section-settings" style="display: none;">
+                <div class="stat-card" style="max-width: 500px;">
+                    <h2 style="margin-bottom: 1.5rem;">Təhlükəsizlik Ayarları</h2>
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label>Yeni İstifadəçi Adı</label>
+                            <input type="text" id="new-admin-user" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Yeni Şifrə</label>
+                            <input type="password" id="new-admin-pass" class="form-input" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Məlumatları
+                            Yenilə</button>
+                    </form>
                 </div>
             </div>
         </main>

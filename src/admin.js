@@ -2,8 +2,12 @@
 let ads = JSON.parse(localStorage.getItem('ads')) || [
     { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
     { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+    { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
     { id: 3, title: 'Hyundai Accent Arxa Stop', price: 80, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'pending' }
 ];
+
+// Admin login məlumatlarını yadda saxlayırıq
+let adminCreds = JSON.parse(localStorage.getItem('adminCreds')) || { user: 'admin', pass: '1234' };
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('login-section');
@@ -11,13 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // 1. Login Sistemi (Sadə yoxlama)
+    // 1. Login Sistemi (Dinamik yoxlama)
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const user = document.getElementById('admin-user').value;
         const pass = document.getElementById('admin-pass').value;
 
-        if (user === 'admin' && pass === '1234') {
+        if (user === adminCreds.user && pass === adminCreds.pass) {
             localStorage.setItem('isAdminLoggedIn', 'true');
             showAdminPanel();
         } else {
@@ -56,12 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Bölmələri göstər/gizlə
                 document.getElementById('section-dashboard').style.display = section === 'dashboard' ? 'block' : 'none';
                 document.getElementById('section-ads').style.display = section === 'ads' ? 'block' : 'none';
+                document.getElementById('section-settings').style.display = section === 'settings' ? 'block' : 'none';
 
                 // Başlıqları yenilə
-                document.getElementById('page-title').textContent = section.charAt(0).toUpperCase() + section.slice(1);
+                document.getElementById('page-title').textContent = section === 'dashboard' ? 'Dashboard' :
+                    section === 'ads' ? 'Elanlar' : 'Ayarlar';
+                document.getElementById('page-subtitle').textContent = section === 'dashboard' ? 'Sistemin ümumi vəziyyəti' :
+                    section === 'ads' ? 'Elanların idarə edilməsi' : 'Təhlükəsizlik tənzimləmələri';
             }
         });
     });
+
+    // 2.1 Ayarlar Formu
+    const settingsForm = document.getElementById('settings-form');
+    if (settingsForm) {
+        // Mövcud məlumatları doldur
+        document.getElementById('new-admin-user').value = adminCreds.user;
+        document.getElementById('new-admin-pass').value = adminCreds.pass;
+
+        settingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newUser = document.getElementById('new-admin-user').value;
+            const newPass = document.getElementById('new-admin-pass').value;
+
+            if (newUser && newPass) {
+                adminCreds = { user: newUser, pass: newPass };
+                localStorage.setItem('adminCreds', JSON.stringify(adminCreds));
+                alert('Giriş məlumatları uğurla yeniləndi!');
+            }
+        });
+    }
 
     // 3. Reklamların Siyahısı (CRUD)
     function renderAds() {
