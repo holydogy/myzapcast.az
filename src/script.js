@@ -66,4 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 5. Mobile Menu Toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
 });
