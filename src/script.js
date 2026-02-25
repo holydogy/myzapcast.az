@@ -42,19 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const adsContainer = document.querySelector('.ads-grid');
         if (!adsContainer) return;
 
-        const storedAds = JSON.parse(localStorage.getItem('ads')) || [
-            { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-            { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
-        ];
+        let storedAds = JSON.parse(localStorage.getItem('ads'));
+
+        // Əgər yaddaş tamamilə boşdursa, ilk nümunə elanları əlavə edirik
+        if (!storedAds || storedAds.length === 0) {
+            storedAds = [
+                { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
+            ];
+            localStorage.setItem('ads', JSON.stringify(storedAds));
+        }
 
         adsContainer.innerHTML = '';
-
         const activeAds = storedAds.filter(ad => ad.status === 'active');
-
-        if (activeAds.length === 0) {
-            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
-            return;
-        }
 
         activeAds.reverse().forEach(ad => {
             const adHTML = `
