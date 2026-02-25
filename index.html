@@ -49,23 +49,48 @@
 
     <!-- 2. Hero Section with Floating Search -->
     <section class="hero">
-        <div class="container">
-            <div class="badge-float">
+        <div class="container hero-reveal-container">
+            <div class="badge-float hero-reveal-item" style="transition-delay: 0.1s;">
                 <i class="fa-solid fa-sparkles" style="color: var(--secondary);"></i>
                 <span>Sizin üçün ən yaxşı təkliflər</span>
             </div>
 
-            <h1>Doğru hissəni, <span>Tapın!</span> 👋</h1>
-            <p>Minlərlə ehtiyat hissəsi arasında sizə lazım olanı saniyələr içində kəşf edin.</p>
+            <h1 class="hero-reveal-item" style="transition-delay: 0.2s;">Doğru hissəni, <span>Tapın!</span> 👋</h1>
+            <p class="hero-reveal-item" style="transition-delay: 0.3s;">Minlərlə ehtiyat hissəsi arasında sizə lazım
+                olanı saniyələr içində kəşf edin.</p>
 
-            <div class="search-container">
-                <i class="fa-solid fa-magnifying-glass"
-                    style="margin-left: 1rem; align-self: center; color: var(--text-muted);"></i>
-                <input type="text" class="search-input" placeholder="Məhsul adı və ya kateqoriya axtar...">
-                <button class="btn-hero-search">Axtar</button>
+            <div class="search-box-premium hero-reveal-item" style="transition-delay: 0.4s;">
+                <div class="search-main">
+                    <i class="fa-solid fa-magnifying-glass search-icon-main"></i>
+                    <input type="text" class="search-input" placeholder="Hissə adı və ya kod...">
+                </div>
+
+                <div class="search-filters-row">
+                    <div class="filter-item-small">
+                        <i class="fa-solid fa-car"></i>
+                        <select>
+                            <option>Marka (Hamısı)</option>
+                            <option>BMW</option>
+                            <option>Mercedes</option>
+                            <option>Hyundai</option>
+                            <option>Toyota</option>
+                        </select>
+                    </div>
+                    <div class="filter-item-small">
+                        <i class="fa-solid fa-microchip"></i>
+                        <select>
+                            <option>Model (Hamısı)</option>
+                        </select>
+                    </div>
+                    <div class="filter-item-small">
+                        <i class="fa-solid fa-tag"></i>
+                        <input type="number" placeholder="Maks. Qiymət">
+                    </div>
+                    <button class="btn-hero-search-new">NƏTİCƏLƏR</button>
+                </div>
             </div>
 
-            <div class="trending-tags">
+            <div class="trending-tags hero-reveal-item" style="transition-delay: 0.5s;">
                 <span
                     style="color: var(--text-muted); font-size: 13px; font-weight: 600; align-self: center;">Məşhur:</span>
                 <a href="#" class="tag">#BMW F30</a>
