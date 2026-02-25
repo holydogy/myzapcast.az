@@ -49,6 +49,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="users">
+                        <i class="fa-solid fa-users"></i> İstifadəçilər
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link" data-section="categories">
                         <i class="fa-solid fa-tags"></i> Kateqoriyalar
                     </a>
@@ -93,6 +98,13 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="stat-title">İstifadəçilər</div>
+                        <div class="stat-value" id="stat-total-users">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <div class="stat-title">Aktiv Elanlar</div>
@@ -132,13 +144,45 @@
                 </div>
             </div>
 
+            <!-- Users Management Content -->
+            <div id="section-users" style="display: none;">
+                <div class="data-table-container">
+                    <div class="table-header">
+                        <h2>Qeydiyyatdan keçən istifadəçilər</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tam ad</th>
+                                <th>E-poçt</th>
+                                <th>Əməliyyatlar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- JS ilə doldurulacaq -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Categories Content -->
+            <div id="section-categories" style="display: none;">
+                <div class="data-table-container">
+                    <div class="table-header">
+                        <h2>Kateqoriyaların İdarəedilməsi</h2>
+                    </div>
+                    <p style="color: var(--text-muted);">Tezliklə...</p>
+                </div>
+            </div>
+
             <!-- Settings Content -->
             <div id="section-settings" style="display: none;">
                 <div class="stat-card" style="max-width: 500px;">
                     <h2 style="margin-bottom: 1.5rem;">Təhlükəsizlik Ayarları</h2>
                     <form id="settings-form">
                         <div class="form-group">
-                            <label>Yeni İstifadəçi Adı</label>
+                            <label>Yeni Admin Adı</label>
                             <input type="text" id="new-admin-user" class="form-input" required>
                         </div>
                         <div class="form-group">

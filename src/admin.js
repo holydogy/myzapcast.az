@@ -4,6 +4,8 @@ let ads = JSON.parse(localStorage.getItem('ads')) || [
     { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
 ];
 
+let users = JSON.parse(localStorage.getItem('users')) || [];
+
 // Admin login məlumatları
 let adminCreds = JSON.parse(localStorage.getItem('adminCreds')) || { user: 'admin', pass: 'toghruladmin123' };
 
@@ -48,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (adminLayout) adminLayout.style.display = 'flex';
         updateStats();
         renderAds();
+        renderUsers();
     }
 
     // Naviqasiya
@@ -60,16 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
 
-                const sections = ['dashboard', 'ads', 'settings'];
+                const sections = ['dashboard', 'ads', 'users', 'categories', 'settings'];
                 sections.forEach(s => {
                     const el = document.getElementById(`section-${s}`);
                     if (el) el.style.display = s === section ? 'block' : 'none';
                 });
 
                 const pageTitle = document.getElementById('page-title');
+                const pageSubtitle = document.getElementById('page-subtitle');
                 if (pageTitle) {
                     pageTitle.textContent = section === 'dashboard' ? 'Dashboard' :
-                        section === 'ads' ? 'Elanlar' : 'Ayarlar';
+                        section === 'ads' ? 'Elanlar' :
+                            section === 'users' ? 'İstifadəçilər' :
+                                section === 'categories' ? 'Kateqoriyalar' : 'Ayarlar';
+                }
+                if (pageSubtitle) {
+                    pageSubtitle.textContent = section === 'dashboard' ? 'Sistemin ümumi vəziyyəti' :
+                        section === 'ads' ? 'Elanların idarə edilməsi' :
+                            section === 'users' ? 'İstifadəçi bazası' :
+                                section === 'categories' ? 'Kateqoriya tənzimləmələri' : 'Təhlükəsizlik';
                 }
             }
         });
@@ -95,17 +107,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function renderUsers() {
+        const tbody = document.getElementById('users-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        users.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td class="actions">
+                    <button class="btn-action btn-delete" onclick="deleteUser(${user.id})"><i class="fa-solid fa-user-slash"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
     function updateStats() {
-        const totalEl = document.getElementById('stat-total-ads');
-        if (!totalEl) return;
+        const totalAdsEl = document.getElementById('stat-total-ads');
+        const totalUsersEl = document.getElementById('stat-total-users');
+        if (!totalAdsEl) return;
 
-        const total = ads.length;
-        const active = ads.filter(a => a.status === 'active').length;
-        const pending = total - active;
+        const totalAds = ads.length;
+        const activeAds = ads.filter(a => a.status === 'active').length;
+        const pendingAds = totalAds - activeAds;
+        const totalUsers = users.length;
 
-        totalEl.textContent = total;
-        document.getElementById('stat-active-ads').textContent = active;
-        document.getElementById('stat-pending-ads').textContent = pending;
+        totalAdsEl.textContent = totalAds;
+        totalUsersEl.textContent = totalUsers;
+        document.getElementById('stat-active-ads').textContent = activeAds;
+        document.getElementById('stat-pending-ads').textContent = pendingAds;
     }
 
     // CRUD Funksiyaları
@@ -118,8 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    window.deleteUser = (id) => {
+        if (confirm('Bu istifadəçini silmək istəyirsiniz?')) {
+            users = users.filter(u => u.id !== id);
+            localStorage.setItem('users', JSON.stringify(users));
+            renderUsers();
+            updateStats();
+        }
+    };
+
     window.editAd = (id) => {
-        // Redaktə məntiqi...
+        // Redaktə məntiqi modal vasitəsilə...
+        alert('Redaktə funksiyası tezliklə aktiv olacaq.');
     };
 
     function saveToStorage() {
