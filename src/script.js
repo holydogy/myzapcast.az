@@ -1,7 +1,16 @@
 // Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 0. İstifadəçi Girişi və Header Yenilənməsi
+    // 0. Reveal Observer Definition (At the top to be available for renderAds)
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // 1. İstifadəçi Girişi və Header Yenilənməsi
     const updateHeaderAuth = () => {
         const authContainer = document.querySelector('.auth-buttons');
         if (!authContainer) return;
@@ -25,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateHeaderAuth();
 
-    // 0.1 Elan Yerləşdir Düyməsi Auth Yoxlaması
+    // 2. Elan Yerləşdir Düyməsi Auth Yoxlaması
     const adPostBtn = document.querySelector('.ad-post-btn');
     if (adPostBtn) {
         adPostBtn.addEventListener('click', (e) => {
@@ -37,14 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 0.2 LocalStorage-dan elanları yükləyib göstərmək
+    // 3. LocalStorage-dan elanları yükləyib göstərmək
     const renderAds = () => {
         const adsContainer = document.querySelector('.ads-grid');
         if (!adsContainer) return;
 
         let storedAds = JSON.parse(localStorage.getItem('ads'));
 
-        // Əgər yaddaş tamamilə boşdursa, ilk nümunə elanları əlavə edirik
+        // Default ads if empty
         if (!storedAds || storedAds.length === 0) {
             storedAds = [
                 { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
@@ -57,6 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         adsContainer.innerHTML = '';
         const activeAds = storedAds.filter(ad => ad.status === 'active');
+
+        if (activeAds.length === 0) {
+            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
+            return;
+        }
 
         activeAds.reverse().forEach(ad => {
             const adHTML = `
@@ -76,13 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </article>
             `;
-            adsContainer.insertAdjacentHTML('beforeend', adHTML);
+            const temp = document.createElement('div');
+            temp.innerHTML = adHTML.trim();
+            const card = temp.firstChild;
+            adsContainer.appendChild(card);
+
+            // Observe for animation
+            revealObserver.observe(card);
         });
     };
 
     renderAds();
 
-    // 1. Hero Reveal Animations
+    // 4. Hero Reveal Animations
     const heroItems = document.querySelectorAll('.hero-reveal-item');
     setTimeout(() => {
         heroItems.forEach(item => {
@@ -90,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 100);
 
-    // 2. Scroll Parallax
+    // 5. Scroll Parallax
     const blobs = document.querySelectorAll('.parallax-blob');
     const heroContainer = document.querySelector('.hero-reveal-container');
 
@@ -108,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Mouse Parallax (Card Rotation)
+    // 6. Mouse Parallax (Card Rotation) - Using Event Delegation
     document.addEventListener('mousemove', (e) => {
         const card = e.target.closest('.product-card');
         if (!card) return;
@@ -129,14 +149,4 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
         }
     });
-
-    // 4. Scroll Reveal Observer
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.product-card').forEach(card => revealObserver.observe(card));
-
 });
