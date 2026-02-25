@@ -6,8 +6,10 @@ let ads = JSON.parse(localStorage.getItem('ads')) || [
 
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
-// Admin login məlumatları
-let adminCreds = JSON.parse(localStorage.getItem('adminCreds')) || { user: 'admin', pass: 'toghruladmin123' };
+// Admin siyahısını idarə edirik
+let admins = JSON.parse(localStorage.getItem('allAdmins')) || [
+    { user: 'admin', pass: 'toghruladmin123' }
+];
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('login-section');
@@ -29,7 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const user = document.getElementById('admin-user').value;
             const pass = document.getElementById('admin-pass').value;
 
-            if (user === adminCreds.user && pass === adminCreds.pass) {
+            // İstənilən admın ilə giriş yoxlanılır
+            const foundAdmin = admins.find(a => a.user === user && a.pass === pass);
+
+            if (foundAdmin) {
                 localStorage.setItem('isAdminLoggedIn', 'true');
                 showAdminPanel();
             } else {
@@ -98,7 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Settings Submit
+    // Add Admin Button
+    const addAdminBtn = document.getElementById('add-admin-btn');
+    if (addAdminBtn) {
+        addAdminBtn.addEventListener('click', () => {
+            const newUser = prompt('Yeni adminin istifadəçi adı:');
+            const newPass = prompt('Yeni adminin şifrəsi:');
+
+            if (newUser && newPass) {
+                admins.push({ user: newUser, pass: newPass });
+                localStorage.setItem('allAdmins', JSON.stringify(admins));
+                renderAdmins();
+            }
+        });
+    }
+
+    // Settings Submit (Keep for backward compatibility but updates the first admin)
     const settingsForm = document.getElementById('settings-form');
     if (settingsForm) {
         settingsForm.addEventListener('submit', (e) => {
@@ -106,9 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const newUser = document.getElementById('new-admin-user').value;
             const newPass = document.getElementById('new-admin-pass').value;
 
-            adminCreds = { user: newUser, pass: newPass };
-            localStorage.setItem('adminCreds', JSON.stringify(adminCreds));
+            admins[0] = { user: newUser, pass: newPass };
+            localStorage.setItem('allAdmins', JSON.stringify(admins));
             alert('Admin məlumatları yeniləndi!');
+            renderAdmins();
         });
     }
 
@@ -123,10 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         users = JSON.parse(localStorage.getItem('users')) || [];
         ads = JSON.parse(localStorage.getItem('ads')) || [];
+        admins = JSON.parse(localStorage.getItem('allAdmins')) || admins;
 
         updateStats();
         renderAds();
         renderUsers();
+        renderAdmins();
     }
 
     // Naviqasiya
@@ -139,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
 
-                const sections = ['dashboard', 'ads', 'users', 'categories', 'settings'];
+                const sections = ['dashboard', 'ads', 'users', 'admins', 'categories', 'settings'];
                 sections.forEach(s => {
                     const el = document.getElementById(`section-${s}`);
                     if (el) el.style.display = s === section ? 'block' : 'none';
@@ -150,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     pageTitle.textContent = section === 'dashboard' ? 'Dashboard' :
                         section === 'ads' ? 'Elanlar' :
                             section === 'users' ? 'İstifadəçilər' :
-                                section === 'categories' ? 'Kateqoriyalar' : 'Ayarlar';
+                                section === 'admins' ? 'Adminlər' :
+                                    section === 'categories' ? 'Kateqoriyalar' : 'Ayarlar';
                 }
 
                 if (localStorage.getItem('isAdminLoggedIn') === 'true') {
@@ -158,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ads = JSON.parse(localStorage.getItem('ads')) || [];
                     renderAds();
                     renderUsers();
+                    renderAdmins();
                     updateStats();
                 }
             }
@@ -211,6 +236,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function renderAdmins() {
+        const tbody = document.getElementById('admins-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        admins.forEach((admin, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${admin.user}</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span id="admin-pass-text-${index}" style="font-family: monospace; letter-spacing: 2px;">••••••••</span>
+                        <button class="btn-action" onclick="toggleAdminPass(${index}, '${admin.pass}')" style="padding: 2px 8px; font-size: 12px;">
+                            <i class="fa-solid fa-eye" id="admin-pass-icon-${index}"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="actions">
+                    <button class="btn-action btn-delete" onclick="deleteAdmin(${index})" ${index === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
     window.togglePassDisplay = (id, actualPass) => {
         const span = document.getElementById(`pass-text-${id}`);
         const icon = document.getElementById(`pass-icon-${id}`);
@@ -222,6 +272,29 @@ document.addEventListener('DOMContentLoaded', () => {
             span.textContent = '••••••••';
             span.style.letterSpacing = '2px';
             icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    };
+
+    window.toggleAdminPass = (index, actualPass) => {
+        const span = document.getElementById(`admin-pass-text-${index}`);
+        const icon = document.getElementById(`admin-pass-icon-${index}`);
+        if (span.textContent === '••••••••') {
+            span.textContent = actualPass;
+            span.style.letterSpacing = 'normal';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            span.textContent = '••••••••';
+            span.style.letterSpacing = '2px';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    };
+
+    window.deleteAdmin = (index) => {
+        if (index === 0) return; // Ana admin silinə bilməz
+        if (confirm('Bu admini silmək istəyirsiniz?')) {
+            admins.splice(index, 1);
+            localStorage.setItem('allAdmins', JSON.stringify(admins));
+            renderAdmins();
         }
     };
 

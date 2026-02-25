@@ -56,6 +56,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="admins">
+                        <i class="fa-solid fa-user-shield"></i> Adminlər
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link" data-section="categories">
                         <i class="fa-solid fa-tags"></i> Kateqoriyalar
                     </a>
@@ -163,6 +168,29 @@
                             </tr>
                         </thead>
                         <tbody id="users-table-body">
+                            <!-- JS ilə doldurulacaq -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Admins Management Content -->
+            <div id="section-admins" style="display: none;">
+                <div class="data-table-container">
+                    <div class="table-header">
+                        <h2>Sistem Adminləri</h2>
+                        <button id="add-admin-btn" class="btn-primary" style="background: var(--primary);">+ Yeni
+                            Admin</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Admin Adı</th>
+                                <th>Şifrə</th>
+                                <th>Əməliyyatlar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admins-table-body">
                             <!-- JS ilə doldurulacaq -->
                         </tbody>
                     </table>
