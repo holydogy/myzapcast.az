@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MYZAPCAST.AZ - Ehtiyat Hissələri</title>
+    <title>MYZAPCAST - Premium Ehtiyat Hissələri</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
@@ -13,166 +13,144 @@
 
 <body>
 
-    <!-- 1. Top Navigation -->
+    <!-- Parallax Background Elements -->
+    <div class="parallax-blob blob-1"></div>
+    <div class="parallax-blob blob-2"></div>
+    <div class="parallax-blob blob-3"></div>
+
+    <!-- 1. Soft Top Navigation -->
     <header class="top-nav">
         <div class="container top-nav-container">
-            <a href="/" class="logo">MYZAPCAST.AZ</a>
-            <div class="nav-links">
-                <a href="#" class="nav-link">Hella</a>
-                <a href="#" class="nav-link">Turbo.az</a>
-                <button class="nav-search-btn">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+            <a href="/" class="logo">MYZAPCAST</a>
+
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Ana Səhifə</a>
+                <a href="#" class="nav-link">Ehtiyat Hissələri</a>
+                <a href="#" class="nav-link">Mağazalar</a>
+                <a href="#" class="nav-link">Haqqımızda</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang-switch">
+                    <button class="lang-btn active">AZ</button>
+                    <button class="lang-btn">RU</button>
+                    <button class="lang-btn">EN</button>
+                </div>
+                <div class="user-profile-badge">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Toghrul A.</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- 2. Main Menu Tabs -->
-    <nav class="main-menu">
+    <!-- 2. Hero Section with Floating Search -->
+    <section class="hero">
         <div class="container">
-            <ul class="menu-tabs">
-                <li class="menu-tab active">EHTİYAT HİSSƏLƏRİ</li>
-                <li class="menu-tab">Avtomobillər</li>
-                <li class="menu-tab">Xüsusi Texnika</li>
-                <li class="menu-tab">Yeni Elan</li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- 3. Filter Section -->
-    <section class="filter-section">
-        <div class="container">
-            <div class="filter-grid">
-                <div class="filter-group">
-                    <label>Marka</label>
-                    <select class="filter-input">
-                        <option>Bütün markalar</option>
-                        <option>BMW</option>
-                        <option>Mercedes-Benz</option>
-                        <option>Hyundai</option>
-                        <option>Toyota</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Model</label>
-                    <select class="filter-input">
-                        <option>Bütün modellər</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Buraxılış ili</label>
-                    <select class="filter-input">
-                        <option>İl seçin</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Şəhər</label>
-                    <select class="filter-input">
-                        <option>Bakı</option>
-                        <option>Gəncə</option>
-                        <option>Sumqayıt</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Qiymət (₼)</label>
-                    <input type="text" class="filter-input" placeholder="Maksimal məbləğ">
-                </div>
+            <div class="badge-float">
+                <i class="fa-solid fa-sparkles" style="color: var(--secondary);"></i>
+                <span>Sizin üçün ən yaxşı təkliflər</span>
             </div>
 
-            <div class="filter-actions">
-                <a href="#" style="color: var(--primary); font-weight: 600; text-decoration: none;">Ətraflı axtarış</a>
-                <button class="btn-search">Axtar</button>
+            <h1>Doğru hissəni, <span>Tapın!</span> 👋</h1>
+            <p>Minlərlə ehtiyat hissəsi arasında sizə lazım olanı saniyələr içində kəşf edin.</p>
+
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"
+                    style="margin-left: 1rem; align-self: center; color: var(--text-muted);"></i>
+                <input type="text" class="search-input" placeholder="Məhsul adı və ya kateqoriya axtar...">
+                <button class="btn-hero-search">Axtar</button>
+            </div>
+
+            <div class="trending-tags">
+                <span
+                    style="color: var(--text-muted); font-size: 13px; font-weight: 600; align-self: center;">Məşhur:</span>
+                <a href="#" class="tag">#BMW F30</a>
+                <a href="#" class="tag">#Mühərrik</a>
+                <a href="#" class="tag">#Yağlar</a>
+                <a href="#" class="tag">#Mercedes</a>
+                <a href="#" class="tag">#Filtrlər</a>
             </div>
         </div>
     </section>
 
-    <!-- 4. Latest Ads Grid -->
-    <main class="products-section">
+    <!-- 3. Latest Ads Section -->
+    <main class="ads-section">
         <div class="container">
-            <div class="products-grid">
+            <div class="section-header">
+                <h2>Son Elanlar</h2>
+                <a href="#" style="color: var(--primary); font-weight: 700; text-decoration: none;">Hamısına bax <i
+                        class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="ads-grid">
                 <!-- Ad 1 -->
-                <div class="product-card">
-                    <div class="product-image-container">
+                <article class="product-card">
+                    <div class="product-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="BMW Mühərrik" class="product-image">
+                            alt="BMW Mühərrik" class="product-img">
                     </div>
-                    <div class="product-price">1810.6 AZN</div>
-                    <h3 class="product-title">Slar BMW F30 Mühərrik Yastığı (Original)</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Bakı, bugün</span>
-                        <span class="product-brand">AAP.</span>
+                    <div class="product-info">
+                        <div class="product-price">1810 ₼</div>
+                        <h3 class="product-name">BMW F30 Mühərrik Yastığı (M-Performance)</h3>
+                        <div class="product-footer">
+                            <span class="loc">Bakı, bugün</span>
+                            <button class="btn-call-cirle">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </article>
 
                 <!-- Ad 2 -->
-                <div class="product-card">
-                    <div class="product-image-container">
+                <article class="product-card">
+                    <div class="product-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="Mercedes Diski" class="product-image">
+                            alt="Mercedes Diski" class="product-img">
                     </div>
-                    <div class="product-price">1980 AZN</div>
-                    <h3 class="product-title">Mercedes C-Class AMG Əyləç Diski (Dəstil)</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Bakı, bugün</span>
-                        <span class="product-brand">AAP.</span>
+                    <div class="product-info">
+                        <div class="product-price">1980 ₼</div>
+                        <h3 class="product-name">Mercedes AMG R19 Orjinal Disklər (Set)</h3>
+                        <div class="product-footer">
+                            <span class="loc">Sumqayıt, 14:20</span>
+                            <button class="btn-call-cirle">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </article>
 
                 <!-- Ad 3 -->
-                <div class="product-card">
-                    <div class="product-image-container">
+                <article class="product-card">
+                    <div class="product-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="Fara" class="product-image">
+                            alt="Mercedes Fara" class="product-img">
                     </div>
-                    <div class="product-price">7980 AZN</div>
-                    <h3 class="product-title">Mercedes C-Class Full LED Ön Fara Dəsti</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Bakı, 12:45</span>
-                        <span class="product-brand">AAP.</span>
+                    <div class="product-price">7980 ₼</div>
+                    <h3 class="product-name">Mercedes W222 Multi-Beam LED Faralar</h3>
+                    <div class="product-footer">
+                        <span class="loc">Gəncə, dünən</span>
+                        <button class="btn-call-cirle">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
                     </div>
-                </div>
+                </article>
 
                 <!-- Ad 4 -->
-                <div class="product-card">
-                    <div class="product-image-container">
+                <article class="product-card">
+                    <div class="product-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1511407397940-d57f68e81203?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="Nasos" class="product-image">
+                            alt="Nasos" class="product-img">
                     </div>
-                    <div class="product-price">3550 AZN</div>
-                    <h3 class="product-title">Salnikli Su Nasosu BMW G30 (OEM)</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Sumqayıt, 10:20</span>
-                        <span class="product-brand">AAP.</span>
+                    <div class="product-price">3550 ₼</div>
+                    <h3 class="product-name">Toyota Land Cruiser Su Nasosu (OEM)</h3>
+                    <div class="product-footer">
+                        <span class="loc">Bakı, bugün</span>
+                        <button class="btn-call-cirle">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
                     </div>
-                </div>
-
-                <!-- Ad 5 -->
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <img src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="Filtre" class="product-image">
-                    </div>
-                    <div class="product-price">108.00 AZN</div>
-                    <h3 class="product-title">Mühərrik Yağ Filtri Mercedes OM651</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Gəncə, dünən</span>
-                        <span class="product-brand">AAP.</span>
-                    </div>
-                </div>
-
-                <!-- Ad 6 -->
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <img src="https://images.unsplash.com/photo-1621359982474-3c404834da21?q=80&w=400&h=300&auto=format&fit=crop"
-                            alt="Fara" class="product-image">
-                    </div>
-                    <div class="product-price">8780 AZN</div>
-                    <h3 class="product-title">Tucson Hyundai Yağ Farası (Təzə)</h3>
-                    <div class="product-meta">
-                        <span class="product-location">Bakı, bugün</span>
-                        <span class="product-brand">AAP.</span>
-                    </div>
-                </div>
+                </article>
             </div>
         </div>
     </main>
