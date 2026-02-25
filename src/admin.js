@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginSection) loginSection.style.display = 'none';
         if (adminLayout) adminLayout.style.display = 'flex';
 
-        // Məlumatları yeniləyirik (Səhifəni yeniləmədən dəyişiklikləri görmək üçün)
         users = JSON.parse(localStorage.getItem('users')) || [];
         ads = JSON.parse(localStorage.getItem('ads')) || [];
 
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const pageTitle = document.getElementById('page-title');
-                const pageSubtitle = document.getElementById('page-subtitle');
                 if (pageTitle) {
                     pageTitle.textContent = section === 'dashboard' ? 'Dashboard' :
                         section === 'ads' ? 'Elanlar' :
@@ -83,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 section === 'categories' ? 'Kateqoriyalar' : 'Ayarlar';
                 }
 
-                // Məlumatları hər keçiddə təzələyirik
                 if (localStorage.getItem('isAdminLoggedIn') === 'true') {
                     users = JSON.parse(localStorage.getItem('users')) || [];
                     ads = JSON.parse(localStorage.getItem('ads')) || [];
@@ -126,7 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${user.id}</td>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
-                <td style="font-family: monospace; letter-spacing: 2px;">•••••••• <i class="fa-solid fa-eye-slash" style="font-size: 11px; cursor: help;" title="Şifrə təhlükəsizlik üçün gizlədilib"></i></td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span id="pass-text-${user.id}" style="font-family: monospace; letter-spacing: 2px;">••••••••</span>
+                        <button class="btn-action" onclick="togglePassDisplay(${user.id}, '${user.password}')" style="padding: 2px 8px; font-size: 12px;">
+                            <i class="fa-solid fa-eye" id="pass-icon-${user.id}"></i>
+                        </button>
+                    </div>
+                </td>
                 <td class="actions">
                     <button class="btn-action btn-delete" onclick="deleteUser(${user.id})"><i class="fa-solid fa-user-slash"></i></button>
                 </td>
@@ -134,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.appendChild(tr);
         });
     }
+
+    window.togglePassDisplay = (id, actualPass) => {
+        const span = document.getElementById(`pass-text-${id}`);
+        const icon = document.getElementById(`pass-icon-${id}`);
+        if (span.textContent === '••••••••') {
+            span.textContent = actualPass;
+            span.style.letterSpacing = 'normal';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            span.textContent = '••••••••';
+            span.style.letterSpacing = '2px';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    };
 
     function updateStats() {
         const totalAdsEl = document.getElementById('stat-total-ads');

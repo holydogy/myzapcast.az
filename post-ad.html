@@ -4,87 +4,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elan Yerləşdir - MYZAPCAST</title>
+    <title>Yeni Elan - MYZAPCAST</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/style.css">
     <link rel="stylesheet" href="src/admin.css">
+    <style>
+        .post-ad-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-card);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preview-box {
+            aspect-ratio: 1;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            border: 2px dashed #e2e8f0;
+        }
+    </style>
 </head>
 
 <body style="background: #f8fafc;">
-    <div class="auth-container">
-        <div class="auth-card" style="max-width: 550px;">
+    <!-- Parallax Background Elements -->
+    <div class="parallax-blob blob-1"></div>
+    <div class="parallax-blob blob-2"></div>
+
+    <div class="container">
+        <div class="post-ad-container hero-reveal-item revealed">
             <div style="text-align: center; margin-bottom: 2rem;">
                 <a href="/"
                     style="font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none;">MYZAPCAST</a>
+                <h2 style="margin-top: 1rem;">Yeni Elan Yerləşdir ✨</h2>
+                <p style="color: var(--text-muted);">Məhsul haqqında ətraflı məlumat daxil edin</p>
             </div>
-            <h2 style="margin-bottom: 0.5rem; text-align: center;">Elan Yerləşdir 🚀</h2>
-            <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Məhsulunuzu minlərlə alıcıya təqdim edin
-            </p>
 
-            <form id="user-post-ad-form">
+            <form id="detailed-post-form">
                 <div class="form-group">
-                    <label>Hissənin adı</label>
-                    <input type="text" id="ad-title" class="form-input" placeholder="Məs: BMW F30 Ön Faralar" required>
+                    <label>Elanın başlığı</label>
+                    <input type="text" id="ad-title" class="form-input" placeholder="Məs: BMW F30 Ön Faralar (Yeni)"
+                        required>
                 </div>
-                <div class="form-group">
-                    <label>Qiymət (₼)</label>
-                    <input type="number" id="ad-price" class="form-input" placeholder="Məs: 450" required>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kateqoriya</label>
+                        <select id="ad-category" class="form-input" required>
+                            <option value="parts">Ehtiyat Hissələri</option>
+                            <option value="accessories">Aksesuarlar</option>
+                            <option value="tires">Təkərlər</option>
+                            <option value="oils">Yağlar</option>
+                            <option value="equipment">Texnika</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vəziyyəti</label>
+                        <select id="ad-condition" class="form-input" required>
+                            <option value="new">Yeni</option>
+                            <option value="used">İşlənmiş</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Kateqoriya</label>
-                    <select id="ad-category" class="form-input" required>
-                        <option value="parts">Ehtiyat Hissələri</option>
-                        <option value="accessories">Aksesuarlar</option>
-                        <option value="tires">Təkərlər</option>
-                        <option value="oils">Yağlar</option>
-                        <option value="equipment">Texnika</option>
-                    </select>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Marka (Avtomobil)</label>
+                        <input type="text" id="ad-make" class="form-input" placeholder="Məs: BMW">
+                    </div>
+                    <div class="form-group">
+                        <label>Model</label>
+                        <input type="text" id="ad-model" class="form-input" placeholder="Məs: F30">
+                    </div>
                 </div>
+
                 <div class="form-group">
-                    <label>Şəkil URL</label>
+                    <label>Təsvir (Ətraflı məlumat)</label>
+                    <textarea id="ad-desc" class="form-input" style="height: 120px; padding: 15px; resize: none;"
+                        placeholder="Məhsulun vəziyyəti, çatdırılma və s. haqqında yazın..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Qiymət (₼)</label>
+                        <input type="number" id="ad-price" class="form-input" placeholder="450" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Əlaqə nömrəsi</label>
+                        <input type="tel" id="ad-phone" class="form-input" placeholder="+994 -- --- -- --" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Əsas Şəkil URL</label>
                     <input type="url" id="ad-image" class="form-input" placeholder="https://images.unsplash.com/..."
                         required>
                 </div>
-                <div class="form-group">
-                    <label>Əlaqə nömrəsi</label>
-                    <input type="tel" id="ad-phone" class="form-input" placeholder="+994 -- --- -- --" required>
-                </div>
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Elanı Paylaş</button>
-            </form>
 
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="/" style="color: var(--text-muted); font-size: 14px; text-decoration: none;"><i
-                        class="fa-solid fa-arrow-left"></i> Ana səhifəyə qayıt</a>
-            </div>
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 16px;">Elanı
+                        Dərc Et</button>
+                    <a href="/"
+                        style="display: block; text-align: center; margin-top: 1rem; color: var(--text-muted); text-decoration: none;">Ləğv
+                        et</a>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('user-post-ad-form').addEventListener('submit', (e) => {
-            e.preventDefault();
+        // Check Auth
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = '/register.html';
+        }
 
-            // İstifadəçi girişi yoxlaması (opsional, amma daha yaxşı auth üçün)
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        document.getElementById('detailed-post-form').addEventListener('submit', (e) => {
+            e.preventDefault();
 
             const newAd = {
                 id: Date.now(),
                 title: document.getElementById('ad-title').value,
                 price: document.getElementById('ad-price').value,
                 category: document.getElementById('ad-category').value,
+                condition: document.getElementById('ad-condition').value,
+                make: document.getElementById('ad-make').value,
+                model: document.getElementById('ad-model').value,
+                desc: document.getElementById('ad-desc').value,
                 image: document.getElementById('ad-image').value,
                 phone: document.getElementById('ad-phone').value,
-                status: 'active',
-                author: currentUser ? currentUser.name : 'Qonaq'
+                status: 'pending', // Admin təsdiqi üçün 'pending' edirik
+                author: currentUser.name,
+                date: new Date().toLocaleDateString('az-AZ')
             };
 
             let ads = JSON.parse(localStorage.getItem('ads')) || [];
             ads.push(newAd);
             localStorage.setItem('ads', JSON.stringify(ads));
 
-            alert('Elanınız uğurla paylaşıldı!');
+            alert('Elanınız qəbul edildi və yoxlanışdan sonra dərc olunacaq!');
             window.location.href = '/';
+        });
+
+        // Simple mouse parallax for blobs
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.parallax-blob');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            blobs.forEach((blob, i) => {
+                blob.style.transform = `translate(${x * (i + 1) * 30}px, ${y * (i + 1) * 30}px)`;
+            });
         });
     </script>
 </body>

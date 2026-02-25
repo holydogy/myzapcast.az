@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentUser) {
             authContainer.innerHTML = `
                 <div class="user-profile-info" style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 13px; font-weight: 700;">${currentUser.name}</span>
-                    <button id="user-logout" class="btn-login" style="border: none; background: none; cursor: pointer; padding: 0.5rem 1rem;">Çıxış</button>
+                    <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">${currentUser.name}</span>
+                    <button id="user-logout" class="btn-login" style="border: none; background: #f1f5f9; cursor: pointer; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700;">Çıxış</button>
                 </div>
             `;
 
@@ -25,12 +25,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateHeaderAuth();
 
-    // 0.1 LocalStorage-dan elanları yükləyib göstərmək (Admin panel ilə sinxronizasiya)
+    // 0.1 Elan Yerləşdir Düyməsi Auth Yoxlaması
+    const adPostBtn = document.querySelector('.ad-post-btn');
+    if (adPostBtn) {
+        adPostBtn.addEventListener('click', (e) => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                e.preventDefault();
+                window.location.href = '/register.html';
+            }
+        });
+    }
+
+    // 0.2 LocalStorage-dan elanları yükləyib göstərmək
     const renderAds = () => {
         const adsContainer = document.querySelector('.ads-grid');
         if (!adsContainer) return;
 
-        // Bazarımızda olan elanları alırıq
         const storedAds = JSON.parse(localStorage.getItem('ads')) || [
             { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
             { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
@@ -49,8 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const adHTML = `
                 <article class="product-card">
                     <div class="product-img-wrapper">
-                        <img src="${ad.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop'}" 
-                             alt="${ad.title}" class="product-img">
+                        <img src="${ad.image}" alt="${ad.title}" class="product-img">
                     </div>
                     <div class="product-info">
                         <div class="product-price">${ad.price} ₼</div>
@@ -96,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Mouse Parallax (Card Rotation) - Event Delegation
+    // 3. Mouse Parallax (Card Rotation)
     document.addEventListener('mousemove', (e) => {
         const card = e.target.closest('.product-card');
         if (!card) return;
@@ -104,13 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-
         const rotateX = (y - centerY) / 12;
         const rotateY = (centerX - x) / 12;
-
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
     });
 
@@ -124,32 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Scroll Reveal Observer
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.1 });
 
-    const observeCards = () => {
-        document.querySelectorAll('.product-card').forEach(card => revealObserver.observe(card));
-    };
-    observeCards();
-
-    // 5. Zəng Et düyməsi - Event Delegation
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-call-cirle')) {
-            e.preventDefault();
-            alert('Satıcı ilə əlaqə yaradılır: +994 50 123 45 67');
-        }
-    });
-
-    // 6. Mobile Menu Toggle
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    }
+    document.querySelectorAll('.product-card').forEach(card => revealObserver.observe(card));
 
 });
