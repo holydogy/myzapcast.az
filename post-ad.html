@@ -111,7 +111,8 @@
                     </div>
                     <div class="form-group">
                         <label>Əlaqə nömrəsi</label>
-                        <input type="tel" id="ad-phone" class="form-input" placeholder="+994 -- --- -- --" required>
+                        <input type="tel" id="ad-phone" class="form-input" value="+994 " placeholder="+994 -- --- -- --"
+                            required>
                     </div>
                 </div>
 
@@ -156,6 +157,14 @@
         const fileInput = document.getElementById('file-input');
         const previewImg = document.getElementById('upload-preview');
         const dropZoneContent = document.getElementById('drop-zone-content');
+
+        // Phone Prefix Enforcement
+        const phoneInput = document.getElementById('ad-phone');
+        phoneInput.addEventListener('input', function () {
+            if (!this.value.startsWith('+994 ')) {
+                this.value = '+994 ';
+            }
+        });
 
         // Handle Click Upload
         dropZone.addEventListener('click', () => fileInput.click());
