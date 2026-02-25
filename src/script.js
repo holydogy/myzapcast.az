@@ -1,40 +1,50 @@
 // Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Zəng Et Düyməsinin funksionallığı
-    const callButtons = document.querySelectorAll('.btn-call');
+    // 1. Scroll Reveal (Səhifəni sürüşdürdükdə elementlərin yavaşca çıxması)
+    const revealElements = document.querySelectorAll('.product-card');
 
-    callButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault(); // Düymənin səhifəni yeniləməsinin qarşısını alırıq
-
-            // Düymənin aid olduğu kartı tapırıq
-            const card = e.target.closest('.ad-card');
-
-            if (card) {
-                // Həmin kartın məlumatlarını alırıq
-                const adTitle = card.querySelector('.ad-title').textContent.trim();
-
-                // İçərisində istifadəçi (fa-user) ikonu olan .ad-detail elementini tapırıq
-                const userDetail = Array.from(card.querySelectorAll('.ad-detail')).find(
-                    el => el.querySelector('.fa-user')
-                );
-                const sellerName = userDetail ? userDetail.textContent.trim() : 'Satıcı';
-
-                // Xəbərdarlıq pəncərəsi (Alert) göstəririk
-                alert(`Siz "${adTitle}" elanı üçün ${sellerName} ilə əlaqə saxlayırsınız.\n\nTelefon nömrəsi nümayiş etdirilir: +994 50 XXX XX XX`);
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
             }
+        });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => {
+        el.classList.add('reveal'); // CSS-dəki reveal klasını əlavə edirik
+        revealObserver.observe(el);
+    });
+
+    // 2. Mouse Parallax (Siçan hərəkətinə görə kartların meyl etməsi)
+    const cards = document.querySelectorAll('.product-card');
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
         });
     });
 
-    // 2. Axtarış ikonu üçün fokuslama (Mobil cihazlarda toxunduqda rahat olması üçün)
-    const searchWrapper = document.querySelector('.search-wrapper');
-    const searchInput = document.querySelector('.search-input');
-    const searchIcon = document.querySelector('.search-icon');
-
-    if (searchWrapper && searchInput && searchIcon) {
-        searchIcon.addEventListener('click', () => {
-            searchInput.focus();
+    // 3. Axtarış ikonu üçün fokuslama
+    const searchBtn = document.querySelector('.nav-search-btn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            alert('Axtarış bölməsi aktivləşdirilir...');
         });
     }
 
