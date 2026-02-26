@@ -1,25 +1,27 @@
+import type { Ad, User, AdminUser } from './types';
+
 // LocalStorage-da məlumatları saxlayırıq
-let ads = JSON.parse(localStorage.getItem('ads')) || [
+let ads: Ad[] = JSON.parse(localStorage.getItem('ads') || '[]') || [
     { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
     { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
 ];
 
-let users = JSON.parse(localStorage.getItem('users')) || [];
+let users: User[] = JSON.parse(localStorage.getItem('users') || '[]') || [];
 
 // Admin siyahısını idarə edirik
-let admins = JSON.parse(localStorage.getItem('allAdmins')) || [
+let admins: AdminUser[] = JSON.parse(localStorage.getItem('allAdmins') || '[]') || [
     { user: 'admin', pass: 'toghruladmin123' }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('login-section');
     const adminLayout = document.getElementById('admin-layout');
-    const loginForm = document.getElementById('login-form');
+    const loginForm = document.getElementById('login-form') as HTMLFormElement | null;
     const logoutBtn = document.getElementById('logout-btn');
 
     // Modal elements
     const adModal = document.getElementById('ad-modal');
-    const adForm = document.getElementById('ad-form');
+    const adForm = document.getElementById('ad-form') as HTMLFormElement | null;
     const addAdBtn = document.getElementById('add-ad-btn');
     const cancelModal = document.getElementById('cancel-modal');
     const modalTitle = document.getElementById('modal-title');
@@ -28,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const user = document.getElementById('admin-user').value;
-            const pass = document.getElementById('admin-pass').value;
+            const user = (document.getElementById('admin-user') as HTMLInputElement).value;
+            const pass = (document.getElementById('admin-pass') as HTMLInputElement).value;
 
             // İstənilən admın ilə giriş yoxlanılır
             const foundAdmin = admins.find(a => a.user === user && a.pass === pass);
@@ -55,16 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Control
     if (addAdBtn) {
         addAdBtn.addEventListener('click', () => {
-            modalTitle.textContent = 'Yeni Elan';
-            adForm.reset();
-            document.getElementById('ad-id').value = '';
-            adModal.style.display = 'flex';
+            if (modalTitle) modalTitle.textContent = 'Yeni Elan';
+            adForm?.reset();
+            (document.getElementById('ad-id') as HTMLInputElement).value = '';
+            if (adModal) adModal.style.display = 'flex';
         });
     }
 
     if (cancelModal) {
         cancelModal.addEventListener('click', () => {
-            adModal.style.display = 'none';
+            if (adModal) adModal.style.display = 'none';
         });
     }
 
@@ -72,21 +74,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (adForm) {
         adForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const id = document.getElementById('ad-id').value;
-            const title = document.getElementById('ad-title').value;
-            const price = document.getElementById('ad-price').value;
-            const image = document.getElementById('ad-image').value;
-            const status = document.getElementById('ad-status').value;
+            const id = (document.getElementById('ad-id') as HTMLInputElement).value;
+            const title = (document.getElementById('ad-title') as HTMLInputElement).value;
+            const price = (document.getElementById('ad-price') as HTMLInputElement).value;
+            const image = (document.getElementById('ad-image') as HTMLInputElement).value;
+            const status = (document.getElementById('ad-status') as HTMLSelectElement).value as Ad['status'];
 
             if (id) {
                 // Edit existing
-                const index = ads.findIndex(a => a.id == id);
+                const index = ads.findIndex(a => a.id == Number(id));
                 if (index !== -1) {
                     ads[index] = { ...ads[index], title, price, image, status };
                 }
             } else {
                 // Add new
-                const newAd = {
+                const newAd: Ad = {
                     id: Date.now(),
                     title,
                     price,
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveToStorage();
             renderAds();
             updateStats();
-            adModal.style.display = 'none';
+            if (adModal) adModal.style.display = 'none';
         });
     }
 
@@ -118,13 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Settings Submit (Keep for backward compatibility but updates the first admin)
-    const settingsForm = document.getElementById('settings-form');
+    // Settings Submit
+    const settingsForm = document.getElementById('settings-form') as HTMLFormElement | null;
     if (settingsForm) {
         settingsForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const newUser = document.getElementById('new-admin-user').value;
-            const newPass = document.getElementById('new-admin-pass').value;
+            const newUser = (document.getElementById('new-admin-user') as HTMLInputElement).value;
+            const newPass = (document.getElementById('new-admin-pass') as HTMLInputElement).value;
 
             admins[0] = { user: newUser, pass: newPass };
             localStorage.setItem('allAdmins', JSON.stringify(admins));
@@ -142,9 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginSection) loginSection.style.display = 'none';
         if (adminLayout) adminLayout.style.display = 'flex';
 
-        users = JSON.parse(localStorage.getItem('users')) || [];
-        ads = JSON.parse(localStorage.getItem('ads')) || [];
-        admins = JSON.parse(localStorage.getItem('allAdmins')) || admins;
+        users = JSON.parse(localStorage.getItem('users') || '[]') || [];
+        ads = JSON.parse(localStorage.getItem('ads') || '[]') || [];
+        admins = JSON.parse(localStorage.getItem('allAdmins') || '[]') || admins;
 
         updateStats();
         renderAds();
@@ -178,8 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-                    users = JSON.parse(localStorage.getItem('users')) || [];
-                    ads = JSON.parse(localStorage.getItem('ads')) || [];
+                    users = JSON.parse(localStorage.getItem('users') || '[]') || [];
+                    ads = JSON.parse(localStorage.getItem('ads') || '[]') || [];
                     renderAds();
                     renderUsers();
                     renderAdmins();
@@ -201,11 +203,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${ad.price} ₼</td>
                 <td><span class="status-badge ${ad.status === 'active' ? 'status-active' : 'status-pending'}">${ad.status === 'active' ? 'Aktiv' : 'Gözləyir'}</span></td>
                 <td class="actions">
-                    <button class="btn-action btn-edit" onclick="editAd(${ad.id})"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="btn-action btn-delete" onclick="deleteAd(${ad.id})"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-action btn-edit" data-id="${ad.id}"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn-action btn-delete" data-id="${ad.id}"><i class="fa-solid fa-trash"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
+        });
+
+        // Add event listeners to buttons
+        tbody.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                if (id) (window as any).editAd(Number(id));
+            });
+        });
+        tbody.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                if (id) (window as any).deleteAd(Number(id));
+            });
         });
     }
 
@@ -223,16 +239,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span id="pass-text-${user.id}" style="font-family: monospace; letter-spacing: 2px;">••••••••</span>
-                        <button class="btn-action" onclick="togglePassDisplay(${user.id}, '${user.password}')" style="padding: 2px 8px; font-size: 12px;">
+                        <button class="btn-action btn-toggle-pass" data-id="${user.id}" data-pass="${user.password}" style="padding: 2px 8px; font-size: 12px;">
                             <i class="fa-solid fa-eye" id="pass-icon-${user.id}"></i>
                         </button>
                     </div>
                 </td>
                 <td class="actions">
-                    <button class="btn-action btn-delete" onclick="deleteUser(${user.id})"><i class="fa-solid fa-user-slash"></i></button>
+                    <button class="btn-action btn-delete-user" data-id="${user.id}"><i class="fa-solid fa-user-slash"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.btn-toggle-pass').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const pass = btn.getAttribute('data-pass');
+                if (id && pass) (window as any).togglePassDisplay(Number(id), pass);
+            });
+        });
+        tbody.querySelectorAll('.btn-delete-user').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                if (id) (window as any).deleteUser(Number(id));
+            });
         });
     }
 
@@ -248,48 +278,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span id="admin-pass-text-${index}" style="font-family: monospace; letter-spacing: 2px;">••••••••</span>
-                        <button class="btn-action" onclick="toggleAdminPass(${index}, '${admin.pass}')" style="padding: 2px 8px; font-size: 12px;">
+                        <button class="btn-action btn-toggle-admin-pass" data-index="${index}" data-pass="${admin.pass}" style="padding: 2px 8px; font-size: 12px;">
                             <i class="fa-solid fa-eye" id="admin-pass-icon-${index}"></i>
                         </button>
                     </div>
                 </td>
                 <td class="actions">
-                    <button class="btn-action btn-delete" onclick="deleteAdmin(${index})" ${index === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-action btn-delete-admin" data-index="${index}" ${index === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fa-solid fa-trash"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
+
+        tbody.querySelectorAll('.btn-toggle-admin-pass').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = btn.getAttribute('data-index');
+                const pass = btn.getAttribute('data-pass');
+                if (idx !== null && pass) (window as any).toggleAdminPass(Number(idx), pass);
+            });
+        });
+        tbody.querySelectorAll('.btn-delete-admin').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = btn.getAttribute('data-index');
+                if (idx !== null) (window as any).deleteAdmin(Number(idx));
+            });
+        });
     }
 
-    window.togglePassDisplay = (id, actualPass) => {
+    (window as any).togglePassDisplay = (id: number, actualPass: string) => {
         const span = document.getElementById(`pass-text-${id}`);
         const icon = document.getElementById(`pass-icon-${id}`);
-        if (span.textContent === '••••••••') {
-            span.textContent = actualPass;
-            span.style.letterSpacing = 'normal';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            span.textContent = '••••••••';
-            span.style.letterSpacing = '2px';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        if (span && icon) {
+            if (span.textContent === '••••••••') {
+                span.textContent = actualPass;
+                span.style.letterSpacing = 'normal';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                span.textContent = '••••••••';
+                span.style.letterSpacing = '2px';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
         }
     };
 
-    window.toggleAdminPass = (index, actualPass) => {
+    (window as any).toggleAdminPass = (index: number, actualPass: string) => {
         const span = document.getElementById(`admin-pass-text-${index}`);
         const icon = document.getElementById(`admin-pass-icon-${index}`);
-        if (span.textContent === '••••••••') {
-            span.textContent = actualPass;
-            span.style.letterSpacing = 'normal';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            span.textContent = '••••••••';
-            span.style.letterSpacing = '2px';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        if (span && icon) {
+            if (span.textContent === '••••••••') {
+                span.textContent = actualPass;
+                span.style.letterSpacing = 'normal';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                span.textContent = '••••••••';
+                span.style.letterSpacing = '2px';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
         }
     };
 
-    window.deleteAdmin = (index) => {
+    (window as any).deleteAdmin = (index: number) => {
         if (index === 0) return; // Ana admin silinə bilməz
         if (confirm('Bu admini silmək istəyirsiniz?')) {
             admins.splice(index, 1);
@@ -298,18 +346,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.editAd = (id) => {
+    (window as any).editAd = (id: number) => {
         const ad = ads.find(a => a.id == id);
         if (!ad) return;
 
-        modalTitle.textContent = 'Elanı Redaktə Et';
-        document.getElementById('ad-id').value = ad.id;
-        document.getElementById('ad-title').value = ad.title;
-        document.getElementById('ad-price').value = ad.price;
-        document.getElementById('ad-image').value = ad.image;
-        document.getElementById('ad-status').value = ad.status;
+        if (modalTitle) modalTitle.textContent = 'Elanı Redaktə Et';
+        (document.getElementById('ad-id') as HTMLInputElement).value = String(ad.id);
+        (document.getElementById('ad-title') as HTMLInputElement).value = ad.title;
+        (document.getElementById('ad-price') as HTMLInputElement).value = String(ad.price);
+        (document.getElementById('ad-image') as HTMLInputElement).value = ad.image;
+        (document.getElementById('ad-status') as HTMLSelectElement).value = ad.status;
 
-        adModal.style.display = 'flex';
+        if (adModal) adModal.style.display = 'flex';
     };
 
     function updateStats() {
@@ -322,13 +370,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const pendingAds = totalAds - activeAds;
         const totalUsers = users.length;
 
-        totalAdsEl.textContent = totalAds;
-        totalUsersEl.textContent = totalUsers;
-        document.getElementById('stat-active-ads').textContent = activeAds;
-        document.getElementById('stat-pending-ads').textContent = pendingAds;
+        totalAdsEl.textContent = String(totalAds);
+        if (totalUsersEl) totalUsersEl.textContent = String(totalUsers);
+        const activeEl = document.getElementById('stat-active-ads');
+        const pendingEl = document.getElementById('stat-pending-ads');
+        if (activeEl) activeEl.textContent = String(activeAds);
+        if (pendingEl) pendingEl.textContent = String(pendingAds);
     }
 
-    window.deleteAd = (id) => {
+    (window as any).deleteAd = (id: number) => {
         if (confirm('Bu elanı silmək istəyirsiniz?')) {
             ads = ads.filter(a => a.id !== id);
             saveToStorage();
@@ -337,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.deleteUser = (id) => {
+    (window as any).deleteUser = (id: number) => {
         if (confirm('Bu istifadəçini silmək istəyirsiniz?')) {
             users = users.filter(u => u.id !== id);
             localStorage.setItem('users', JSON.stringify(users));

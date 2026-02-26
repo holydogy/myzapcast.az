@@ -16,23 +16,42 @@
     <!-- 1. Soft Top Navigation -->
     <header class="top-nav">
         <div class="container top-nav-container">
-            <a href="/" class="logo-container">
-                <img src="/logo.png" alt="MYZAPCAST" class="logo-img"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                <span class="logo-text" style="display: none;">MYZAPCAST</span>
-            </a>
+            <div class="nav-left-group">
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="/" class="logo-container">
+                    <img src="/logo.png" alt="MYZAPCAST" class="logo-img">
+                </a>
+            </div>
 
             <nav class="nav-links">
-                <a href="/" class="nav-link">Ana Səhifə</a>
-                <a href="/parts.html" class="nav-link">Ehtiyat Hissələri</a>
-                <a href="/shops.html" class="nav-link">Mağazalar</a>
-                <a href="/about.html" class="nav-link">Haqqımızda</a>
+                <a href="/" class="nav-link" data-i18n="nav_home">Ana Səhifə</a>
+                <a href="/parts.html" class="nav-link" data-i18n="nav_parts">Ehtiyat Hissələri</a>
+                <a href="/shops.html" class="nav-link" data-i18n="nav_shops">Mağazalar</a>
+                <a href="/about.html" class="nav-link" data-i18n="nav_about">Haqqımızda</a>
             </nav>
 
             <div class="nav-actions">
+                <!-- Language Switcher -->
+                <div class="lang-switcher" id="lang-switcher">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="current-lang">AZ</span>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button class="lang-option" data-lang="az">Azərbaycan</button>
+                        <button class="lang-option" data-lang="en">English</button>
+                        <button class="lang-option" data-lang="ru">Русский</button>
+                    </div>
+                </div>
+
+                <!-- Dark Mode Toggle -->
+                <button class="dark-mode-toggle" id="dark-mode-toggle">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
                 <div class="auth-buttons" id="header-auth">
-                    <a href="/login.html" class="btn-login">Daxil ol</a>
-                    <a href="/register.html" class="btn-register">Hesab yarat</a>
+                    <a href="/login.html" class="btn-login" data-i18n="auth_login">Daxil ol</a>
+                    <a href="/register.html" class="btn-register" data-i18n="auth_register">Hesab yarat</a>
                 </div>
             </div>
         </div>
@@ -41,20 +60,22 @@
     <!-- 2. Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Doğru hissəni, <span>Tapın!</span></h1>
-            <p>Minlərlə ehtiyat hissəsi arasında sizə lazım olanı saniyələr içində kəşf edin.</p>
+            <h1 data-i18n="hero_title">Doğru hissəni, <span>Tapın!</span></h1>
+            <p data-i18n="hero_subtitle">Minlərlə ehtiyat hissəsi arasında sizə lazım olanı saniyələr içində kəşf edin.
+            </p>
 
             <div class="search-box-premium">
                 <div class="search-main">
                     <i class="fa-solid fa-magnifying-glass search-icon-main"></i>
-                    <input type="text" id="search-input" class="search-input" placeholder="Hissə adı və ya kod...">
+                    <input type="text" id="search-input" class="search-input" placeholder="Hissə adı və ya kod..."
+                        data-i18n-placeholder="search_placeholder">
                 </div>
 
                 <div class="search-filters-row">
                     <div class="filter-item-small">
                         <i class="fa-solid fa-car" style="color: var(--primary);"></i>
                         <select id="filter-make">
-                            <option value="">Marka (Hamısı)</option>
+                            <option value="" data-i18n="make_all">Marka (Hamısı)</option>
                             <option>BMW</option>
                             <option>Mercedes</option>
                             <option>Toyota</option>
@@ -62,13 +83,15 @@
                     </div>
                     <div class="filter-item-small">
                         <i class="fa-solid fa-microchip" style="color: var(--primary);"></i>
-                        <input type="text" id="filter-model" placeholder="Model (Məs: F30)">
+                        <input type="text" id="filter-model" placeholder="Model (Məs: F30)"
+                            data-i18n-placeholder="model_placeholder">
                     </div>
                     <div class="filter-item-small">
                         <i class="fa-solid fa-tag" style="color: var(--primary);"></i>
-                        <input type="number" id="filter-price" placeholder="Maks. Qiymət">
+                        <input type="number" id="filter-price" placeholder="Maks. Qiymət"
+                            data-i18n-placeholder="price_placeholder">
                     </div>
-                    <button class="btn-hero-search-new" id="search-btn">AXTAR</button>
+                    <button class="btn-hero-search-new" id="search-btn" data-i18n="search_btn">AXTAR</button>
                 </div>
             </div>
         </div>
@@ -80,32 +103,32 @@
             <div class="category-items">
                 <a href="/parts.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-gear"></i></div>
-                    <span>Hissələr</span>
+                    <span data-i18n="cat_parts">Hissələr</span>
                 </a>
                 <a href="/shops.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-store"></i></div>
-                    <span>Mağazalar</span>
+                    <span data-i18n="cat_shops">Mağazalar</span>
                 </a>
                 <a href="/equipment.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-truck-monster"></i></div>
-                    <span>Texnika</span>
+                    <span data-i18n="cat_tech">Texnika</span>
                 </a>
                 <a href="/tires.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-circle-dot"></i></div>
-                    <span>Təkərlər</span>
+                    <span data-i18n="cat_tires">Təkərlər</span>
                 </a>
                 <a href="/oils.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-droplet"></i></div>
-                    <span>Yağlar</span>
+                    <span data-i18n="cat_oils">Yağlar</span>
                 </a>
                 <a href="/accessories.html" class="cat-item">
                     <div class="cat-icon"><i class="fa-solid fa-plug"></i></div>
-                    <span>Aksesuar</span>
+                    <span data-i18n="cat_acc">Aksesuar</span>
                 </a>
                 <a href="/post-ad.html" class="cat-item">
                     <div class="cat-icon" style="background: var(--primary); color: white;"><i
                             class="fa-solid fa-plus"></i></div>
-                    <span style="color: var(--primary); font-weight: 800;">Elan yerləşdir</span>
+                    <span style="color: var(--primary); font-weight: 800;" data-i18n="post_ad">Elan yerləşdir</span>
                 </a>
             </div>
         </div>
@@ -115,8 +138,9 @@
     <main class="ads-section">
         <div class="container">
             <div class="section-header">
-                <h2>Son Elanlar</h2>
-                <a href="/parts.html" style="color: var(--primary); font-weight: 700; text-decoration: none;">Hamısına
+                <h2 data-i18n="latest_ads">Son Elanlar</h2>
+                <a href="/parts.html" style="color: var(--primary); font-weight: 700; text-decoration: none;"
+                    data-i18n="see_all">Hamısına
                     bax <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
@@ -128,7 +152,34 @@
         </div>
     </main>
 
-    <script type="module" src="src/script.js"></script>
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-text">MENU</span>
+            <button class="sidebar-close" id="sidebar-close">&times;</button>
+        </div>
+        <nav class="sidebar-links">
+            <a href="/" class="sidebar-link"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Ana
+                    Səhifə</span></a>
+            <a href="/parts.html" class="sidebar-link"><i class="fa-solid fa-gear"></i> <span
+                    data-i18n="nav_parts">Ehtiyat Hissələri</span></a>
+            <a href="/shops.html" class="sidebar-link"><i class="fa-solid fa-store"></i> <span
+                    data-i18n="nav_shops">Mağazalar</span></a>
+            <a href="/about.html" class="sidebar-link"><i class="fa-solid fa-info-circle"></i> <span
+                    data-i18n="nav_about">Haqqımızda</span></a>
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+            <a href="/login.html" class="sidebar-link"><i class="fa-solid fa-user"></i> <span
+                    data-i18n="auth_login">Daxil ol</span></a>
+            <a href="/register.html" class="sidebar-link"><i class="fa-solid fa-user-plus"></i> <span
+                    data-i18n="auth_register">Hesab yarat</span></a>
+        </nav>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script type="module" src="src/script.ts"></script>
 </body>
 
 </html>

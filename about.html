@@ -7,6 +7,43 @@
     <title>Haqqımızda - MYZAPCAST</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/style.css">
+    <style>
+        .rotating-box {
+            display: inline-block;
+            min-width: 250px;
+            text-align: left;
+            color: var(--primary);
+            font-weight: 900;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .fade-in-out {
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </head>
 
 <body style="background: var(--bg-soft);">
@@ -22,31 +59,67 @@
     <main class="container" style="padding: 4rem 1rem;">
         <div
             style="background: white; padding: 4rem; border-radius: var(--radius-2xl); box-shadow: var(--shadow-soft); text-align: center;">
-            <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Biz kimik? 🚗</h1>
-            <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; max-width: 800px; margin: 0 auto;">
-                MYZAPCAST Azərbaycanda ehtiyat hissələri bazarını rəqəmsallaşdıran müasir platformadır.
-                Gördüyümüz işin əsas məqsədi ehtiyat hissəsi axtaranlarla satanları ən operativ və şəffaf şəkildə
-                birləşdirməkdir.
-                Premium ehtiyat hissələri, aksesuar və avto-xidmətlər üçün 1 nömrəli ünvan olmağı hədəfləyirik.
+            <h1 style="font-size: 2.8rem; margin-bottom: 1.5rem; font-weight: 800;">
+                MYZAPCAST: <span id="dynamic-text" class="rotating-box">Aktiv Elanlar</span>
+            </h1>
+
+            <p
+                style="font-size: 1.25rem; color: var(--text-muted); line-height: 1.8; max-width: 850px; margin: 0 auto 3rem;">
+                Azərbaycanın ən böyük ehtiyat hissələri platformasında sizə lazım olan
+                bütün <span style="color: var(--primary); font-weight: 700;">Hissə</span>,
+                <span style="color: var(--primary); font-weight: 700;">Mağaza</span> və
+                <span style="color: var(--primary); font-weight: 700;">Xidmət</span>lər bir arada.
             </p>
-            <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-                <div>
-                    <h3 style="color: var(--primary); font-size: 1.5rem;">5000+</h3>
-                    <p>Aktiv Elan</p>
+
+            <div style="margin-top: 4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                <div style="padding: 2rem; background: var(--bg-soft); border-radius: 24px; transition: 0.3s;"
+                    onmouseover="this.style.transform='translateY(-10px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa-solid fa-bullhorn"
+                        style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--text-main); font-size: 1.8rem; font-weight: 800;">5000+</h3>
+                    <p style="color: var(--text-muted); font-weight: 600;">Aktiv Elan</p>
                 </div>
-                <div>
-                    <h3 style="color: var(--primary); font-size: 1.5rem;">200+</h3>
-                    <p>Mağaza</p>
+                <div style="padding: 2rem; background: var(--bg-soft); border-radius: 24px; transition: 0.3s;"
+                    onmouseover="this.style.transform='translateY(-10px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa-solid fa-store"
+                        style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--text-main); font-size: 1.8rem; font-weight: 800;">200+</h3>
+                    <p style="color: var(--text-muted); font-weight: 600;">Mağaza</p>
                 </div>
-                <div>
-                    <h3 style="color: var(--primary); font-size: 1.5rem;">24/7</h3>
-                    <p>Dəstək</p>
+                <div style="padding: 2rem; background: var(--bg-soft); border-radius: 24px; transition: 0.3s;"
+                    onmouseover="this.style.transform='translateY(-10px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa-solid fa-headset"
+                        style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--text-main); font-size: 1.8rem; font-weight: 800;">24/7</h3>
+                    <p style="color: var(--text-muted); font-weight: 600;">Dəstək</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <script type="module" src="src/script.js"></script>
+    <script>
+        const words = ["Aktiv Elanlar", "Real Mağazalar", "Güvənli Alışveriş", "Operativ Dəstək"];
+        const dynamicText = document.getElementById('dynamic-text');
+        let index = 0;
+
+        function rotateText() {
+            dynamicText.classList.remove('fade-in-out');
+            void dynamicText.offsetWidth; // Trigger reflow
+            dynamicText.classList.add('fade-in-out');
+
+            setTimeout(() => {
+                index = (index + 1) % words.length;
+                dynamicText.textContent = words[index];
+            }, 1000); // Change text halfway through the animation
+        }
+
+        setInterval(rotateText, 2500);
+        rotateText(); // Initial call
+    </script>
+    <script type="module" src="src/script.ts"></script>
 </body>
 
 </html>
