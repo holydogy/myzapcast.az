@@ -1,34 +1,42 @@
 // Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 0. Reveal Observer Definition (At the top to be available for renderAds)
+    // 0. Reveal Observer Definition
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target); // Animasiya olandan sonra izləməni dayandırırıq
             }
         });
     }, { threshold: 0.1 });
 
     // 1. İstifadəçi Girişi və Header Yenilənməsi
     const updateHeaderAuth = () => {
-        const authContainer = document.querySelector('.auth-buttons');
-        if (!authContainer) return;
+        try {
+            const authContainer = document.querySelector('.auth-buttons');
+            if (!authContainer) return;
 
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const currentUserData = localStorage.getItem('currentUser');
+            if (!currentUserData) return;
 
-        if (currentUser) {
-            authContainer.innerHTML = `
-                <div class="user-profile-info" style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">${currentUser.name}</span>
-                    <button id="user-logout" class="btn-login" style="border: none; background: #f1f5f9; cursor: pointer; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700;">Çıxış</button>
-                </div>
-            `;
+            const currentUser = JSON.parse(currentUserData);
 
-            document.getElementById('user-logout').addEventListener('click', () => {
-                localStorage.removeItem('currentUser');
-                location.reload();
-            });
+            if (currentUser && currentUser.name) {
+                authContainer.innerHTML = `
+                    <div class="user-profile-info" style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">${currentUser.name}</span>
+                        <button id="user-logout" class="btn-login" style="border: none; background: #f1f5f9; cursor: pointer; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700;">Çıxış</button>
+                    </div>
+                `;
+
+                document.getElementById('user-logout').addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+        } catch (e) {
+            console.error("Auth error:", e);
         }
     };
 
@@ -38,66 +46,80 @@ document.addEventListener('DOMContentLoaded', () => {
     const adPostBtn = document.querySelector('.ad-post-btn');
     if (adPostBtn) {
         adPostBtn.addEventListener('click', (e) => {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
                 e.preventDefault();
-                window.location.href = '/register.html';
+                window.location.href = 'register.html';
             }
         });
     }
 
     // 3. LocalStorage-dan elanları yükləyib göstərmək
     const renderAds = () => {
-        const adsContainer = document.querySelector('.ads-grid');
-        if (!adsContainer) return;
+        try {
+            const adsContainer = document.querySelector('.ads-grid');
+            if (!adsContainer) return;
 
-        let storedAds = JSON.parse(localStorage.getItem('ads'));
+            let storedAds = [];
+            try {
+                const data = localStorage.getItem('ads');
+                storedAds = data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("Ads parse error:", e);
+                storedAds = [];
+            }
 
-        // Default ads if empty
-        if (!storedAds || storedAds.length === 0) {
-            storedAds = [
-                { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
-            ];
-            localStorage.setItem('ads', JSON.stringify(storedAds));
-        }
+            // Default ads if empty
+            if (!storedAds || storedAds.length === 0) {
+                storedAds = [
+                    { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                    { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                    { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
+                    { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
+                ];
+                localStorage.setItem('ads', JSON.stringify(storedAds));
+            }
 
-        adsContainer.innerHTML = '';
-        const activeAds = storedAds.filter(ad => ad.status === 'active');
+            adsContainer.innerHTML = '';
 
-        if (activeAds.length === 0) {
-            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
-            return;
-        }
+            // Filter only active ads
+            const activeAds = Array.isArray(storedAds) ? storedAds.filter(ad => ad && ad.status === 'active') : [];
 
-        activeAds.reverse().forEach(ad => {
-            const adHTML = `
-                <article class="product-card">
-                    <div class="product-img-wrapper">
-                        <img src="${ad.image}" alt="${ad.title}" class="product-img">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-price">${ad.price} ₼</div>
-                        <h3 class="product-name">${ad.title}</h3>
-                        <div class="product-footer">
-                            <span class="loc">Bakı, bugün</span>
-                            <button class="btn-call-cirle">
-                                <i class="fa-solid fa-phone"></i>
-                            </button>
+            if (activeAds.length === 0) {
+                adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
+                return;
+            }
+
+            // Reverse to show newest first and render
+            [...activeAds].reverse().forEach(ad => {
+                const adHTML = `
+                    <article class="product-card">
+                        <div class="product-img-wrapper">
+                            <img src="${ad.image || ''}" alt="${ad.title || 'Elan'}" class="product-img" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
                         </div>
-                    </div>
-                </article>
-            `;
-            const temp = document.createElement('div');
-            temp.innerHTML = adHTML.trim();
-            const card = temp.firstChild;
-            adsContainer.appendChild(card);
+                        <div class="product-info">
+                            <div class="product-price">${ad.price || 0} ₼</div>
+                            <h3 class="product-name">${ad.title || 'Adsız Elan'}</h3>
+                            <div class="product-footer">
+                                <span class="loc">Bakı, bugün</span>
+                                <button class="btn-call-cirle">
+                                    <i class="fa-solid fa-phone"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                const temp = document.createElement('div');
+                temp.innerHTML = adHTML.trim();
+                const card = temp.firstChild;
+                adsContainer.appendChild(card);
 
-            // Observe for animation
-            revealObserver.observe(card);
-        });
+                // Observe for animation
+                revealObserver.observe(card);
+            });
+        } catch (e) {
+            console.error("Render error:", e);
+        }
     };
 
     renderAds();
