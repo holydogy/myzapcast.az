@@ -8,27 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/style.css">
     <style>
-        .post-page {
-            padding: 2rem 1rem 6rem;
-            max-width: 700px;
+        .post-ad-wrapper {
+            padding: 4rem 1rem;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        .post-card {
+        .post-card-premium {
             background: white;
-            padding: 2rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
+            padding: 3rem;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid #f1f5f9;
         }
 
-        .post-header {
+        .form-title {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
-        .post-header img {
-            height: 50px;
-            margin-bottom: 1rem;
+        .form-title h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
         }
 
         .form-group {
@@ -38,148 +40,153 @@
         .form-group label {
             display: block;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             font-size: 0.9rem;
+            color: var(--text-main);
         }
 
-        .form-input {
+        .input-premium {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            outline: none;
+            padding: 1rem 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
             font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .input-premium:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px var(--primary-light);
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
+        }
+
+        .drop-zone-premium {
+            width: 100%;
+            height: 220px;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-muted);
+        }
+
+        .drop-zone-premium:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        .drop-zone-premium i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            background: white;
+            z-index: 5;
+            display: none;
         }
 
         @media (max-width: 600px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-        }
 
-        .drop-zone {
-            width: 100%;
-            height: 180px;
-            border: 2px dashed var(--border-color);
-            border-radius: var(--radius-lg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: var(--transition);
-            background: #fcfcfd;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .drop-zone:hover {
-            border-color: var(--primary);
-            background: var(--bg-main);
-        }
-
-        .drop-zone img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            z-index: 10;
+            .post-card-premium {
+                padding: 2rem 1.5rem;
+            }
         }
     </style>
 </head>
 
-<body>
-    <div class="post-page">
-        <div class="post-card">
-            <div class="post-header">
-                <a href="/"><img src="/logo.png" alt="Logo"
-                        onerror="this.src='https://placehold.co/200x80?text=MYZAPCAST&font=outfit'"></a>
-                <h2>Məhsulu Paylaş 🚀</h2>
+<body style="background: #f8fafc;">
+
+    <header class="top-nav">
+        <div class="container top-nav-container">
+            <a href="/" class="logo-container">
+                <span class="logo-text">MYZAPCAST</span>
+            </a>
+            <a href="/" class="nav-link" style="font-weight: 700;"><i class="fa-solid fa-arrow-left"></i> Geri qayıt</a>
+        </div>
+    </header>
+
+    <div class="post-ad-wrapper">
+        <div class="post-card-premium">
+            <div class="form-title">
+                <h2>Yeni Elan ✨</h2>
+                <p style="color: var(--text-muted);">Məhsul haqqında məlumatları doldurun</p>
             </div>
 
-            <form id="detailed-post-form">
+            <form id="post-ad-form">
                 <div class="form-group">
-                    <label>Elanın başlığı</label>
-                    <input type="text" id="ad-title" class="form-input" placeholder="Məs: BMW F10 Bufer" required>
+                    <label>Başlıq</label>
+                    <input type="text" id="ad-title" class="input-premium" placeholder="Məs: BMW F30 M-tech Bufer"
+                        required>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Kateqoriya</label>
-                        <select id="ad-category" class="form-input" required>
-                            <option value="parts">Hissələr</option>
-                            <option value="accessories">Aksesuar</option>
-                            <option value="tires">Təkərlər</option>
-                            <option value="oils">Yağlar</option>
-                        </select>
+                        <label>Marka</label>
+                        <input type="text" id="ad-make" class="input-premium" placeholder="Məs: BMW" required>
                     </div>
                     <div class="form-group">
-                        <label>Vəziyyəti</label>
-                        <select id="ad-condition" class="form-input">
-                            <option value="new">Yeni</option>
-                            <option value="used">İşlənmiş</option>
-                        </select>
+                        <label>Model</label>
+                        <input type="text" id="ad-model" class="input-premium" placeholder="Məs: F30" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Qiymət (₼)</label>
-                        <input type="number" id="ad-price" class="form-input" placeholder="0" required>
+                        <input type="number" id="ad-price" class="input-premium" placeholder="0" required>
                     </div>
                     <div class="form-group">
-                        <label>Telefon</label>
-                        <input type="tel" id="ad-phone" class="form-input" value="+994 " required>
+                        <label>Kateqoriya</label>
+                        <select id="ad-category" class="input-premium" required>
+                            <option value="parts">Hissələr</option>
+                            <option value="accessories">Aksesuar</option>
+                            <option value="tires">Təkərlər</option>
+                            <option value="oils">Yağlar</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Şəkil</label>
-                    <div id="drop-zone" class="drop-zone">
-                        <i class="fa-solid fa-camera" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                        <span>Şəkil seçin və ya buraya sürüşdürün</span>
-                        <img id="upload-preview" style="display: none;">
+                    <label>Şəkil əlavə et</label>
+                    <div id="drop-zone" class="drop-zone-premium">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span style="font-weight: 600;">Klikləyin və ya şəkli buraya sürüşdürün</span>
+                        <img id="upload-preview" class="preview-img">
                         <input type="file" id="file-input" accept="image/*" style="display: none;">
                     </div>
                 </div>
 
                 <button type="submit" class="btn-register"
-                    style="width: 100%; padding: 1rem; border-radius: var(--radius-md); font-size: 1.1rem;">Elanı
-                    Yerləşdir</button>
+                    style="width: 100%; border: none; padding: 1.25rem; font-size: 1.1rem; margin-top: 1rem; cursor: pointer;">Elanı
+                    dərhal yerləşdir</button>
             </form>
         </div>
     </div>
-
-    <!-- Mobile Bottom Nav -->
-    <nav class="mobile-nav">
-        <a href="/" class="mobile-nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>Ana Səhifə</span>
-        </a>
-        <a href="/parts.html" class="mobile-nav-item">
-            <i class="fa-solid fa-search"></i>
-            <span>Axtar</span>
-        </a>
-        <a href="/post-ad.html" class="mobile-nav-item active">
-            <i class="fa-solid fa-plus-circle" style="color: var(--accent); font-size: 1.5rem;"></i>
-            <span>Paylaş</span>
-        </a>
-        <a href="/shops.html" class="mobile-nav-item">
-            <i class="fa-solid fa-store"></i>
-            <span>Mağazalar</span>
-        </a>
-        <a href="/login.html" class="mobile-nav-item" id="mobile-profile-link">
-            <i class="fa-solid fa-user"></i>
-            <span>Profil</span>
-        </a>
-    </nav>
 
     <script>
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -191,24 +198,26 @@
         const previewImg = document.getElementById('upload-preview');
 
         dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    base64Image = event.target.result;
+                    previewImg.src = base64Image;
+                    previewImg.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-        function handleFile(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                base64Image = e.target.result;
-                previewImg.src = base64Image;
-                previewImg.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        document.getElementById('detailed-post-form').addEventListener('submit', (e) => {
+        document.getElementById('post-ad-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const newAd = {
                 id: Date.now(),
                 title: document.getElementById('ad-title').value,
+                make: document.getElementById('ad-make').value,
+                model: document.getElementById('ad-model').value,
                 price: document.getElementById('ad-price').value,
                 category: document.getElementById('ad-category').value,
                 image: base64Image || 'https://placehold.co/400x300?text=Şəkil+Yoxdur',
@@ -219,14 +228,9 @@
             const ads = JSON.parse(localStorage.getItem('ads')) || [];
             ads.push(newAd);
             localStorage.setItem('ads', JSON.stringify(ads));
+
             alert('Elanınız uğurla yerləşdirildi!');
             window.location.href = '/';
-        });
-
-        // Phone prefix enforcement
-        const phone = document.getElementById('ad-phone');
-        phone.addEventListener('input', function () {
-            if (!this.value.startsWith('+994 ')) this.value = '+994 ';
         });
     </script>
 </body>
