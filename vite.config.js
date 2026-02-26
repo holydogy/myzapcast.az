@@ -24,6 +24,8 @@ export default defineConfig({
                 oils: resolve(__dirname, 'oils.html'),
                 equipment: resolve(__dirname, 'equipment.html'),
                 cars: resolve(__dirname, 'cars.html'),
+                heroLanding: resolve(__dirname, 'hero-landing.html'),
+                premiumLanding: resolve(__dirname, 'premium-landing.html'),
             },
         },
     },

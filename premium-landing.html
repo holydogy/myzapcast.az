@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYZAPCAST | Premium Auto Parts Marketplace</title>
+    <!-- FontAwesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Premium Style -->
+    <link rel="stylesheet" href="premium-style.css">
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo-link">
+                <!-- Circular icon logo from Image 2 as requested -->
+                <img src="/logo.png" alt="MYZAPCAST.AZ" class="logo-img">
+            </a>
+
+            <nav class="nav-menu">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="/marketplace" class="nav-link">Marketplace</a>
+                <a href="/shops" class="nav-link">Shops</a>
+                <a href="/auction" class="nav-link">Auction</a>
+                <a href="/support" class="nav-link">Support</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="/login" class="btn-auth">Login / Register</a>
+                <a href="/post-ad" class="btn-post-ad">
+                    <i class="fa-solid fa-plus"></i>
+                    Post an Ad
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="animate-fade">Precision Parts.<br>High-End Marketplace.</h1>
+            <p class="animate-fade" style="animation-delay: 0.2s;">Discover genuine auto parts with the most advanced
+                marketplace in the region. Luxury performance for every vehicle.</p>
+
+            <!-- Search & Filter Console -->
+            <div class="search-container animate-fade" style="animation-delay: 0.4s;">
+                <div class="main-search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search by part name, OEM code, or car model...">
+                </div>
+
+                <!-- Glassmorphism Multi-Step Filter -->
+                <div class="filter-bar">
+                    <div class="filter-item">
+                        <span class="filter-label">Brand</span>
+                        <select class="filter-select">
+                            <option>Mercedes-Benz</option>
+                            <option>BMW AG</option>
+                            <option>Toyota Motors</option>
+                            <option>Audi</option>
+                            <option>Porsche</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Model</span>
+                        <select class="filter-select">
+                            <option>E-Class W213</option>
+                            <option>5-Series G30</option>
+                            <option>Camry v75</option>
+                            <option>A6 C8</option>
+                            <option>911 Carrera</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Price Range</span>
+                        <select class="filter-select">
+                            <option>0 - 500 AZN</option>
+                            <option>500 - 2000 AZN</option>
+                            <option>2000+ AZN</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Category</span>
+                        <select class="filter-select">
+                            <option>Engine Components</option>
+                            <option>Suspension System</option>
+                            <option>Electrical & Lighting</option>
+                            <option>Interior Accessories</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Condition</span>
+                        <select class="filter-select">
+                            <option>Brand New (OEM)</option>
+                            <option>Used (Tested)</option>
+                            <option>Reconditioned</option>
+                        </select>
+                    </div>
+                    <button class="btn-post-ad" style="padding: 0 2rem; height: 50px;">Apply Filter</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Category Grid -->
+    <section class="category-section container">
+        <div class="category-grid animate-fade" style="animation-delay: 0.6s;">
+            <a href="/category/engines" class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <span class="category-name">Engines</span>
+            </a>
+            <a href="/category/transmissions" class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+                <span class="category-name">Transmissions</span>
+            </a>
+            <a href="/category/wheels" class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fa-solid fa-circle-dot"></i>
+                </div>
+                <span class="category-name">Wheels & Tires</span>
+            </a>
+            <a href="/category/lighting" class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <span class="category-name">Lighting</span>
+            </a>
+            <a href="/category/accessories" class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fa-solid fa-plug"></i>
+                </div>
+                <span class="category-name">Accessories</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Marketplace Grid -->
+    <main class="ads-section container">
+        <div class="section-header animate-fade" style="animation-delay: 0.8s;">
+            <div>
+                <span class="filter-label"
+                    style="display: block; margin-bottom: 0.5rem; color: var(--primary);">Exclusive Listings</span>
+                <h2>Latest Premium Ads</h2>
+            </div>
+            <a href="/all" style="color: var(--primary); text-decoration: none; font-weight: 700;">Explore All <i
+                    class="fa-solid fa-arrow-right-long" style="margin-left: 10px;"></i></a>
+        </div>
+
+        <div class="ads-grid">
+            <!-- Product Card 1 -->
+            <article class="product-card animate-fade" style="animation-delay: 1.0s;">
+                <div class="product-img-wrapper">
+                    <span class="badge-premium">VIP Premium</span>
+                    <!-- Placeholder using professional car part stock image style -->
+                    <img src="https://images.unsplash.com/photo-1621359983222-26db1219b674?w=500&auto=format&fit=crop"
+                        alt="Part" class="product-img">
+                </div>
+                <div class="product-content">
+                    <div class="product-price">1,450 AZN</div>
+                    <h3 class="product-title">Mercedes-Benz E-Class W213 Multibeam LED - Right Side</h3>
+                    <div class="product-tags">
+                        <span class="tag-info"><i class="fa-solid fa-location-dot"></i> Baku, AZ</span>
+                        <span class="tag-info"><i class="fa-solid fa-check-circle"></i> Brand New</span>
+                    </div>
+                    <!-- Quick Hover Actions -->
+                    <div class="hover-actions">
+                        <button class="btn-action btn-whatsapp">
+                            <i class="fa-brands fa-whatsapp"></i> Chat
+                        </button>
+                        <button class="btn-action btn-call">
+                            <i class="fa-solid fa-phone"></i> Call
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Card 2 -->
+            <article class="product-card animate-fade" style="animation-delay: 1.1s;">
+                <div class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=500&auto=format&fit=crop"
+                        alt="Part" class="product-img">
+                </div>
+                <div class="product-content">
+                    <div class="product-price">350 AZN</div>
+                    <h3 class="product-title">BMW G30 Carbon Fiber Mirror Caps - M Performance</h3>
+                    <div class="product-tags">
+                        <span class="tag-info"><i class="fa-solid fa-location-dot"></i> Sumgayit, AZ</span>
+                        <span class="tag-info"><i class="fa-solid fa-check-circle"></i> Original Used</span>
+                    </div>
+                    <div class="hover-actions">
+                        <button class="btn-action btn-whatsapp">
+                            <i class="fa-brands fa-whatsapp"></i> Chat
+                        </button>
+                        <button class="btn-action btn-call">
+                            <i class="fa-solid fa-phone"></i> Call
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Card 3 -->
+            <article class="product-card animate-fade" style="animation-delay: 1.2s;">
+                <div class="product-img-wrapper">
+                    <span class="badge-premium">VIP</span>
+                    <img src="https://images.unsplash.com/photo-1486496146582-9ffcd0b2b2b7?w=500&auto=format&fit=crop"
+                        alt="Part" class="product-img">
+                </div>
+                <div class="product-content">
+                    <div class="product-price">2,200 AZN</div>
+                    <h3 class="product-title">Range Rover Sport L494 Air Suspension Compressor - genuine</h3>
+                    <div class="product-tags">
+                        <span class="tag-info"><i class="fa-solid fa-location-dot"></i> Baku, AZ</span>
+                        <span class="tag-info"><i class="fa-solid fa-check-circle"></i> Refurbished</span>
+                    </div>
+                    <div class="hover-actions">
+                        <button class="btn-action btn-whatsapp">
+                            <i class="fa-brands fa-whatsapp"></i> Chat
+                        </button>
+                        <button class="btn-action btn-call">
+                            <i class="fa-solid fa-phone"></i> Call
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Card 4 -->
+            <article class="product-card animate-fade" style="animation-delay: 1.3s;">
+                <div class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&auto=format&fit=crop"
+                        alt="Part" class="product-img">
+                </div>
+                <div class="product-content">
+                    <div class="product-price">850 AZN</div>
+                    <h3 class="product-title">Audi RS6 Performance Brake Pads Set - Front & Rear</h3>
+                    <div class="product-tags">
+                        <span class="tag-info"><i class="fa-solid fa-location-dot"></i> Baku, AZ</span>
+                        <span class="tag-info"><i class="fa-solid fa-check-circle"></i> Brand New</span>
+                    </div>
+                    <div class="hover-actions">
+                        <button class="btn-action btn-whatsapp">
+                            <i class="fa-brands fa-whatsapp"></i> Chat
+                        </button>
+                        <button class="btn-action btn-call">
+                            <i class="fa-solid fa-phone"></i> Call
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <img src="/logo.png" alt="Logo" class="logo-img">
+                <p>The first high-end marketplace for automotive excellence in Azerbaijan. Buying and selling precisely
+                    what your vehicle deserves.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Marketplace</h4>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Spare Parts</a></li>
+                    <li class="footer-link"><a href="#">Service Centers</a></li>
+                    <li class="footer-link"><a href="#">Auctions</a></li>
+                    <li class="footer-link"><a href="#">Dealers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Help Center</a></li>
+                    <li class="footer-link"><a href="#">Safety & Trust</a></li>
+                    <li class="footer-link"><a href="#">Contact Us</a></li>
+                    <li class="footer-link"><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="app-badges">
+                <h4 class="footer-title">Download MyZapCast</h4>
+                <div style="display: flex; gap: 1rem;">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                        alt="App Store" class="app-badge">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                        alt="Play Store" class="app-badge">
+                </div>
+                <div class="social-icons" style="margin-top: 2rem;">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 MYZAPCAST AZERBAIJAN. ALL RIGHTS RESERVED.</p>
+            <p>DESIGNED BY ANTIGRAVITY SYSTEMS</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
