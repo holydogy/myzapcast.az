@@ -100,19 +100,38 @@ document.addEventListener('DOMContentLoaded', () => {
      * 3. Axtarış düyməsi və hadisələr
      */
     const searchBtn = document.getElementById('search-btn');
+    const searchInput = document.getElementById('search-input');
+    const filterMake = document.getElementById('filter-make');
+    const filterModel = document.getElementById('filter-model');
+    const filterPrice = document.getElementById('filter-price');
+
+    const handleSearch = () => {
+        const filter = {
+            q: searchInput?.value.trim() || '',
+            make: filterMake?.value.trim() || '',
+            model: filterModel?.value.trim() || '',
+            price: filterPrice?.value.trim() || ''
+        };
+
+        renderAds(filter);
+
+        // Nəticələrə sürüşdür
+        const resultsHeader = document.querySelector('.section-header');
+        if (resultsHeader) {
+            resultsHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     if (searchBtn) {
-        searchBtn.addEventListener('click', () => {
-            const filter = {
-                q: document.getElementById('search-input')?.value || '',
-                make: document.getElementById('filter-make')?.value || '',
-                model: document.getElementById('filter-model')?.value || '',
-                price: document.getElementById('filter-price')?.value || ''
-            };
-            renderAds(filter);
-            // Aşağıya sürüşdür
-            document.querySelector('.ads-section')?.scrollIntoView({ behavior: 'smooth' });
-        });
+        searchBtn.addEventListener('click', handleSearch);
     }
+
+    // Enter düyməsi ilə axtarış
+    [searchInput, filterModel, filterPrice].forEach(input => {
+        input?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSearch();
+        });
+    });
 
     // İlk yüklənmə
     syncHeader();
