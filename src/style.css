@@ -642,37 +642,103 @@ body.dark-mode .toast {
 
 /* --- Mobile --- */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 1.25rem;
+        /* ~20px padding */
+    }
+
+    /* Header Mobile Fix */
+    .top-nav {
+        padding: 1rem 0;
+    }
+
+    .top-nav-container {
+        padding: 0 1rem;
+    }
+
+    .nav-links,
+    .auth-buttons {
+        display: none;
+        /* Hide desktop nav and desktop auth buttons */
+    }
+
+    .nav-actions {
+        gap: 0.75rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        padding: 0.25rem;
+    }
+
+    .logo-img {
+        height: 48px;
+    }
+
+    /* Hero Fix */
+    .hero {
+        padding: 4rem 0;
+    }
+
     .hero h1 {
         font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Search Box Fix */
+    .search-box-premium {
+        padding: 0.75rem;
+        border-radius: 20px;
+    }
+
+    .search-main {
+        padding: 0.25rem 1rem;
     }
 
     .search-filters-row {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding-top: 1rem;
+    }
+
+    .filter-item-small {
+        width: 100%;
+        padding: 0.8rem 1rem;
     }
 
     .btn-hero-search-new {
         width: 100%;
-        padding: 1.2rem;
+        padding: 1.1rem;
+        margin-top: 0.5rem;
     }
 
-    .nav-links {
-        display: none;
+    /* Category Fix */
+    .category-items {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
     }
 
-    .container {
-        padding: 0 1.5rem;
+    .cat-item {
+        flex-direction: column;
+        text-align: center;
+        width: auto;
     }
 
+    /* Section Headers */
     .section-header h2 {
         font-size: 1.4rem;
     }
 
     .ads-grid {
         grid-template-columns: 1fr;
-    }
-
-    .mobile-menu-btn {
-        display: block;
+        gap: 1.5rem;
     }
 
     /* Sidebar Menu */
