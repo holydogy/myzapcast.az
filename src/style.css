@@ -256,6 +256,10 @@ body {
     justify-content: space-between;
     gap: 1.5rem;
     overflow-x: auto;
+    overflow-y: visible;
+    /* Ensure vertical movement isn't clipped */
+    padding-top: 1rem;
+    /* Add space for the translateY(-5px) animation */
     padding-bottom: 0.5rem;
     scrollbar-width: none;
 }
@@ -298,6 +302,8 @@ body {
     color: white;
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(26, 86, 219, 0.15);
+    position: relative;
+    z-index: 10;
 }
 
 .cat-item:hover span {
