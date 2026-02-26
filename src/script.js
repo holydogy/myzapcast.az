@@ -1,124 +1,120 @@
 // Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Auth & Header state
-    const updateHeaderAuth = () => {
-        const headerAuth = document.getElementById('header-auth');
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    /**
+     * 1. Header & Auth Logic
+     */
+    const syncHeader = () => {
+        const authContainer = document.getElementById('header-auth');
+        if (!authContainer) return;
 
-        if (currentUser && headerAuth) {
-            headerAuth.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <span style="font-weight: 800; color: var(--text-main); font-size: 0.95rem;">${currentUser.name}</span>
-                    <button id="logout-btn" style="background: #f1f5f9; border: none; padding: 0.6rem 1.2rem; border-radius: var(--radius-full); font-weight: 700; cursor: pointer; color: var(--text-main); transition: var(--transition);">Çıxış</button>
-                </div>
-            `;
+        try {
+            const userJson = localStorage.getItem('currentUser');
+            const user = userJson ? JSON.parse(userJson) : null;
 
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                localStorage.removeItem('currentUser');
-                window.location.reload();
-            });
+            if (user && user.name) {
+                authContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-weight: 800; color: var(--text-main); font-size: 0.9rem;">${user.name}</span>
+                        <button id="logout-btn" style="background: #f1f5f9; border: none; padding: 0.6rem 1.2rem; border-radius: var(--radius-full); font-weight: 700; cursor: pointer;">Çıxış</button>
+                    </div>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                    location.reload();
+                });
+            }
+        } catch (e) {
+            console.error("Header sync error:", e);
         }
     };
 
-    updateHeaderAuth();
+    /**
+     * 2. Elanların Göstərilməsi (Render Ads)
+     */
+    const renderAds = (filter = null) => {
+        const container = document.getElementById('ads-container');
+        if (!container) return;
 
-    // 2. Render Ads
-    const renderAds = (filterData = null) => {
-        const adsContainer = document.getElementById('ads-container');
-        if (!adsContainer) return;
+        // Elanları yükləyirik
+        let ads = [];
+        try {
+            const stored = localStorage.getItem('ads');
+            ads = stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            console.error("Ads loading error:", e);
+            ads = [];
+        }
 
-        let ads = JSON.parse(localStorage.getItem('ads')) || [];
-
-        // If no ads in storage, load defaults
-        if (ads.length === 0) {
+        // Əgər boşdursa default elanlar
+        if (!ads || ads.length === 0) {
             ads = [
-                { id: 1, title: 'BMW E60 Mühərrik Yastığı (M-Tech)', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=500&auto=format&fit=crop', status: 'active', make: 'BMW', model: 'E60' },
-                { id: 2, title: 'Mercedes W211 Ön Bufer (Yeni)', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?w=500&auto=format&fit=crop', status: 'active', make: 'Mercedes', model: 'W211' },
-                { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=500&auto=format&fit=crop', status: 'active', make: 'Mercedes', model: 'W222' },
-                { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&auto=format&fit=crop', status: 'active', make: 'Toyota', model: 'Land Cruiser' }
+                { id: 1, title: 'BMW E60 Mühərrik Yastığı (OEM)', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=500&auto=format&fit=crop', status: 'active', make: 'BMW', model: 'E60' },
+                { id: 2, title: 'Mercedes W211 Ön Bufer (Meyle)', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?w=500&auto=format&fit=crop', status: 'active', make: 'Mercedes', model: 'W211' },
+                { id: 3, title: 'Audi A6 Faralar (LED Matrix)', price: 4200, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=500&auto=format&fit=crop', status: 'active', make: 'Audi', model: 'A6' },
+                { id: 4, title: 'Toyota Prado Su Pompası', price: 185, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&auto=format&fit=crop', status: 'active', make: 'Toyota', model: 'Prado' }
             ];
             localStorage.setItem('ads', JSON.stringify(ads));
         }
 
-        let filteredAds = ads.filter(a => a.status === 'active');
+        // Filtrləmə
+        let list = ads.filter(a => a.status === 'active');
 
-        // Apply filters if provided
-        if (filterData) {
-            const { query, make, model, maxPrice } = filterData;
-
-            filteredAds = filteredAds.filter(ad => {
-                const matchesQuery = !query || ad.title.toLowerCase().includes(query.toLowerCase());
-                const matchesMake = !make || (ad.make && ad.make.toLowerCase() === make.toLowerCase());
-                const matchesModel = !model || (ad.model && ad.model.toLowerCase().includes(model.toLowerCase()));
-                const matchesPrice = !maxPrice || Number(ad.price) <= Number(maxPrice);
-
-                return matchesQuery && matchesMake && matchesModel && matchesPrice;
-            });
+        if (filter) {
+            const { q, make, model, price } = filter;
+            if (q) list = list.filter(a => a.title.toLowerCase().includes(q.toLowerCase()));
+            if (make) list = list.filter(a => a.make && a.make.toLowerCase() === make.toLowerCase());
+            if (model) list = list.filter(a => a.model && a.model.toLowerCase().includes(model.toLowerCase()));
+            if (price) list = list.filter(a => Number(a.price) <= Number(price));
         }
 
-        adsContainer.innerHTML = '';
+        // Təmizləyirik və yazırıq
+        container.innerHTML = '';
 
-        if (filteredAds.length === 0) {
-            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted); font-weight: 600;">Axtarışa uyğun elan tapılmadı.</p>';
+        if (list.length === 0) {
+            container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted); font-weight: 600;">Heç bir elan tapılmadı.</p>';
             return;
         }
 
-        // Show newest first
-        [...filteredAds].reverse().forEach(ad => {
-            const adHTML = `
+        [...list].reverse().forEach(ad => {
+            const card = `
                 <article class="product-card">
                     <div class="product-img-wrapper">
-                        <img src="${ad.image || ''}" alt="${ad.title}" class="product-img" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
+                        <img src="${ad.image || 'https://placehold.co/400x300?text=Şəkil+Yoxdur'}" alt="${ad.title}" class="product-img" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
                     </div>
-                    <div class="product-info-box">
+                    <div>
                         <div class="product-price">${ad.price} ₼</div>
                         <h3 class="product-name">${ad.title}</h3>
                         <div class="product-footer">
                             <span class="loc"><i class="fa-solid fa-location-dot"></i> Bakı, bugün</span>
-                            <button class="btn-call-circle">
-                                <i class="fa-solid fa-phone"></i>
-                            </button>
+                            <button class="btn-call-circle"><i class="fa-solid fa-phone"></i></button>
                         </div>
                     </div>
                 </article>
             `;
-            adsContainer.insertAdjacentHTML('beforeend', adHTML);
+            container.insertAdjacentHTML('beforeend', card);
         });
     };
 
-    renderAds();
-
-    // 3. Search & Filters Logic
+    /**
+     * 3. Axtarış düyməsi və hadisələr
+     */
     const searchBtn = document.getElementById('search-btn');
-    const searchInput = document.getElementById('search-input');
-    const filterMake = document.getElementById('filter-make');
-    const filterModel = document.getElementById('filter-model');
-    const filterPrice = document.getElementById('filter-price');
-
-    const handleSearch = () => {
-        const filterData = {
-            query: searchInput.value.trim(),
-            make: filterMake.value,
-            model: filterModel.value.trim(),
-            maxPrice: filterPrice.value
-        };
-        renderAds(filterData);
-
-        // Scroll to results
-        const adsGrid = document.querySelector('.ads-section');
-        if (adsGrid) {
-            adsGrid.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    if (searchBtn) searchBtn.addEventListener('click', handleSearch);
-
-    // Enter key support for all inputs
-    [searchInput, filterModel, filterPrice].forEach(el => {
-        if (el) el.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSearch();
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            const filter = {
+                q: document.getElementById('search-input')?.value || '',
+                make: document.getElementById('filter-make')?.value || '',
+                model: document.getElementById('filter-model')?.value || '',
+                price: document.getElementById('filter-price')?.value || ''
+            };
+            renderAds(filter);
+            // Aşağıya sürüşdür
+            document.querySelector('.ads-section')?.scrollIntoView({ behavior: 'smooth' });
         });
-    });
+    }
 
+    // İlk yüklənmə
+    syncHeader();
+    renderAds();
 });
