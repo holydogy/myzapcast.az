@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>MYZAPCAST - Premium Ehtiyat Hissələri</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,156 +13,111 @@
 
 <body>
 
+    <!-- Header -->
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo-container">
+                <img src="/logo.png" alt="MYZAPCAST Logo" class="logo-img"
+                    onerror="this.src='https://placehold.co/200x80?text=MYZAPCAST&font=outfit'">
+            </a>
 
-    <!-- 1. Soft Top Navigation -->
-    <header class="top-nav">
-        <div class="container top-nav-container">
-            <a href="/" class="logo">MYZAPCAST</a> <!-- deployment trigger v2 -->
-
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Ana Səhifə</a>
-                <a href="/parts.html" class="nav-link">Ehtiyat Hissələri</a>
-                <a href="/shops.html" class="nav-link">Mağazalar</a>
-                <a href="#" class="nav-link">Haqqımızda</a>
-            </nav>
-
-            <div class="nav-actions">
-                <div class="lang-switch">
-                    <button class="lang-btn active">AZ</button>
-                    <button class="lang-btn">RU</button>
-                </div>
-                <div class="auth-buttons">
-                    <a href="/login.html" class="btn-login">Daxil ol</a>
-                    <a href="/register.html" class="btn-register">Hesab yarat</a>
-                </div>
-                <button class="mobile-menu-toggle" style="display: none;">
-                    <i class="fa-solid fa-bars-staggered"></i>
-                </button>
+            <div class="auth-actions" id="header-auth">
+                <a href="/login.html" class="btn-login">Daxil ol</a>
+                <a href="/register.html" class="btn-register">Hesab yarat</a>
             </div>
         </div>
     </header>
 
-    <!-- 2. Hero Section with Floating Search -->
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="container hero-reveal-container">
-            <div class="badge-float hero-reveal-item" style="transition-delay: 0.1s;">
-                <i class="fa-solid fa-sparkles" style="color: var(--secondary);"></i>
-                <span>Sizin üçün ən yaxşı təkliflər</span>
-            </div>
+        <div class="container">
+            <h1>Doğru hissəni, <span>Tapın!</span></h1>
+            <p>Minlərlə ehtiyat hissəsi arasında saniyələr içində axtarış edin.</p>
 
-            <h1 class="hero-reveal-item" style="transition-delay: 0.2s;">Doğru hissəni, <span>Tapın!</span> 👋</h1>
-            <p class="hero-reveal-item" style="transition-delay: 0.3s;">Minlərlə ehtiyat hissəsi arasında sizə lazım
-                olanı saniyələr içində kəşf edin.</p>
-
-            <div class="search-box-premium hero-reveal-item" style="transition-delay: 0.4s;">
-                <div class="search-main">
-                    <i class="fa-solid fa-magnifying-glass search-icon-main"></i>
-                    <input type="text" class="search-input" placeholder="Hissə adı və ya kod...">
-                </div>
-
-                <div class="search-filters-row">
-                    <div class="filter-item-small">
-                        <i class="fa-solid fa-car"></i>
-                        <select>
-                            <option>Marka (Hamısı)</option>
-                            <option>BMW</option>
-                            <option>Mercedes</option>
-                            <option>Hyundai</option>
-                            <option>Toyota</option>
-                        </select>
-                    </div>
-                    <div class="filter-item-small">
-                        <i class="fa-solid fa-microchip"></i>
-                        <select>
-                            <option>Model (Hamısı)</option>
-                        </select>
-                    </div>
-                    <div class="filter-item-small">
-                        <i class="fa-solid fa-tag"></i>
-                        <input type="number" placeholder="Maks. Qiymət">
-                    </div>
-                    <button class="btn-hero-search-new">NƏTİCƏLƏR</button>
-                </div>
-            </div>
-
-            <div class="trending-tags hero-reveal-item" style="transition-delay: 0.5s;">
-                <span
-                    style="color: var(--text-muted); font-size: 13px; font-weight: 600; align-self: center;">Məşhur:</span>
-                <a href="#" class="tag">#BMW F30</a>
-                <a href="#" class="tag">#Mühərrik</a>
-                <a href="#" class="tag">#Yağlar</a>
-                <a href="#" class="tag">#Mercedes</a>
-                <a href="#" class="tag">#Filtrlər</a>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Hissə adı, kod və ya marka...">
+                <button class="btn-search">AXTAR</button>
             </div>
         </div>
     </section>
 
-    <!-- 3. Category Navigation Menu (Icons) -->
-    <nav class="category-nav-bar">
+    <!-- Categories -->
+    <section class="categories-section">
         <div class="container">
-            <div class="category-items">
-                <a href="/parts.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-gear"></i></div>
-                    <span>Hissələr</span>
+            <div class="category-grid">
+                <a href="/parts.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-gear"></i></div>
+                    <span class="category-name">Hissələr</span>
                 </a>
-                <a href="/shops.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-store"></i></div>
-                    <span>Mağazalar</span>
+                <a href="/shops.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-store"></i></div>
+                    <span class="category-name">Mağazalar</span>
                 </a>
-                <a href="/equipment.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-truck-monster"></i></div>
-                    <span>Texnika</span>
+                <a href="/equipment.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-truck-monster"></i></div>
+                    <span class="category-name">Texnika</span>
                 </a>
-                <a href="/tires.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-circle-dot"></i></div>
-                    <span>Təkərlər</span>
+                <a href="/tires.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-circle-dot"></i></div>
+                    <span class="category-name">Təkərlər</span>
                 </a>
-                <a href="/oils.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-droplet"></i></div>
-                    <span>Yağlar</span>
+                <a href="/oils.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <span class="category-name">Yağlar</span>
                 </a>
-                <a href="/accessories.html" class="cat-item">
-                    <div class="cat-icon"><i class="fa-solid fa-plug"></i></div>
-                    <span>Aksesuar</span>
-                </a>
-                <a href="/post-ad.html" class="cat-item ad-post-btn">
-                    <div class="cat-icon" style="background: var(--primary); color: white;"><i
-                            class="fa-solid fa-plus"></i></div>
-                    <span style="color: var(--primary); font-weight: 800;">Elan yerləşdir</span>
+                <a href="/accessories.html" class="category-card">
+                    <div class="category-icon"><i class="fa-solid fa-plug"></i></div>
+                    <span class="category-name">Aksesuar</span>
                 </a>
             </div>
         </div>
+    </section>
+
+    <!-- Latest Ads -->
+    <section class="ads-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Son Elanlar</h2>
+                <a href="/parts.html" style="font-size: 0.9rem; color: var(--primary);">Hamısına bax <i
+                        class="fa-solid fa-chevron-right"></i></a>
+            </div>
+
+            <div class="ads-grid" id="ads-container">
+                <!-- JS will populate this -->
+                <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">Elanlar
+                    yüklənir...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <a href="/post-ad.html" class="fab-post">
+        <i class="fa-solid fa-plus"></i>
+    </a>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-nav">
+        <a href="/" class="mobile-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Ana Səhifə</span>
+        </a>
+        <a href="/parts.html" class="mobile-nav-item">
+            <i class="fa-solid fa-search"></i>
+            <span>Axtar</span>
+        </a>
+        <a href="/post-ad.html" class="mobile-nav-item">
+            <i class="fa-solid fa-plus-circle" style="color: var(--accent); font-size: 1.5rem;"></i>
+            <span>Paylaş</span>
+        </a>
+        <a href="/shops.html" class="mobile-nav-item">
+            <i class="fa-solid fa-store"></i>
+            <span>Mağazalar</span>
+        </a>
+        <a href="/login.html" class="mobile-nav-item" id="mobile-profile-link">
+            <i class="fa-solid fa-user"></i>
+            <span>Profil</span>
+        </a>
     </nav>
-
-    <!-- 3. Latest Ads Section -->
-    <main class="ads-section">
-        <div class="container main-layout">
-
-            <!-- Left Banner -->
-            <aside class="side-banner">
-                REKLAM<br>YERİ<br>(160x600)
-            </aside>
-
-            <div class="content-area">
-                <div class="section-header">
-                    <h2>Son Elanlar</h2>
-                    <a href="#" style="color: var(--primary); font-weight: 700; text-decoration: none;">Hamısına bax <i
-                            class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="ads-grid">
-                    <!-- JS tərəfindən dinamik doldurulacaq -->
-                    <p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Elanlar
-                        yüklənir...</p>
-                </div>
-            </div>
-
-            <!-- Right Banner -->
-            <aside class="side-banner">
-                REKLAM<br>YERİ<br>(160x600)
-            </aside>
-        </div>
-    </main>
 
     <script type="module" src="src/script.js"></script>
 </body>

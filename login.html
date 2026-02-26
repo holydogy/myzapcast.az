@@ -5,63 +5,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daxil ol - MYZAPCAST</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/style.css">
-    <link rel="stylesheet" href="src/admin.css">
     <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: var(--bg-main);
+        }
+
         .auth-card {
-            background: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .auth-card h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 70, 190, 0.1);
+        }
+
+        .btn-auth {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 1rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 70, 190, 0.2);
+        }
+
+        .btn-auth:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
     </style>
 </head>
 
-<body style="background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <a href="/"><img src="/logo.png" alt="Logo" style="height: 60px; margin-bottom: 1.5rem;"
+                    onerror="this.src='https://placehold.co/200x80?text=MYZAPCAST&font=outfit'"></a>
+            <h2>Xoş Gəldiniz 👋</h2>
+            <p>Davam etmək üçün hesabınıza daxil olun</p>
 
-    <div class="auth-containerhero-reveal-item revealed" style="width: 100%; display: flex; justify-content: center;">
-        <div class="auth-card" style="width: 100%; max-width: 420px;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <a href="/"
-                    style="font-size: 1.8rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -1px;">MYZAPCAST</a>
-            </div>
-            <h2 style="margin-bottom: 0.5rem; text-align: center; font-weight: 800;">Xoş Gəldiniz 👋</h2>
-            <p style="color: #64748b; text-align: center; margin-bottom: 2rem; font-size: 15px;">Davam etmək üçün
-                hesabınıza daxil olun</p>
-
-            <form id="user-login-form" autocomplete="off">
+            <form id="user-login-form">
                 <div class="form-group">
-                    <label style="font-weight: 700; font-size: 13px; color: var(--text-main);">E-poçt ünvanı</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="numune@gmail.com" required
-                        autocomplete="off" style="border-radius: 12px; padding: 12px 16px;">
+                    <label>E-poçt ünvanı</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="numune@gmail.com" required>
                 </div>
                 <div class="form-group">
-                    <label style="font-weight: 700; font-size: 13px; color: var(--text-main);">Şifrə</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required
-                        autocomplete="new-password" style="border-radius: 12px; padding: 12px 16px;">
-                    <div style="text-align: right; margin-top: 0.5rem;">
-                        <a href="/forgot-password.html"
-                            style="font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 600;">Şifrəni
-                            unutmusuz?</a>
-                    </div>
+                    <label>Şifrə</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn-primary"
-                    style="width: 100%; margin-top: 1rem; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 15px; box-shadow: 0 10px 15px -3px rgba(26, 86, 219, 0.3);">Daxil
-                    ol</button>
+                <button type="submit" class="btn-auth">Daxil ol</button>
             </form>
 
-            <div style="text-align: center; margin-top: 2rem; font-size: 14px; color: var(--text-muted);">
-                Hesabınız yoxdur? <a href="/register.html"
-                    style="color: var(--primary); font-weight: 800; text-decoration: none;">Qeydiyyatdan keçin</a>
+            <div style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-muted);">
+                Hesabınız yoxdur? <a href="/register.html" style="color: var(--primary); font-weight: 800;">Qeydiyyatdan
+                    keçin</a>
             </div>
         </div>
     </div>
 
     <script>
-
         document.getElementById('user-login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;

@@ -1,118 +1,131 @@
-// Səhifə yükləndikdən sonra işləyəcək kodlar
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. İstifadəçi Girişi və Header Yenilənməsi
+    // 1. Auth & Header state
     const updateHeaderAuth = () => {
-        try {
-            const authContainer = document.querySelector('.auth-buttons');
-            if (!authContainer) return;
+        const headerAuth = document.getElementById('header-auth');
+        const mobileProfileLink = document.getElementById('mobile-profile-link');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-            const currentUserData = localStorage.getItem('currentUser');
-            if (!currentUserData) return;
+        if (currentUser && headerAuth) {
+            headerAuth.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px; font-weight: 700;">
+                    <span style="color: var(--text-main); font-size: 0.9rem;">${currentUser.name}</span>
+                    <button id="logout-btn" style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">Çıxış</button>
+                </div>
+            `;
 
-            const currentUser = JSON.parse(currentUserData);
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.reload();
+            });
 
-            if (currentUser && currentUser.name) {
-                authContainer.innerHTML = `
-                    <div class="user-profile-info" style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">${currentUser.name}</span>
-                        <button id="user-logout" class="btn-login" style="border: none; background: #f1f5f9; cursor: pointer; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700;">Çıxış</button>
-                    </div>
-                `;
-
-                document.getElementById('user-logout').addEventListener('click', () => {
-                    localStorage.removeItem('currentUser');
-                    window.location.reload();
-                });
+            if (mobileProfileLink) {
+                mobileProfileLink.innerHTML = `<i class="fa-solid fa-user-circle" style="color: var(--primary);"></i><span>Profil</span>`;
+                mobileProfileLink.href = "/profile.html"; // Or any other profile page
             }
-        } catch (e) {
-            console.error("Auth error:", e);
         }
     };
 
     updateHeaderAuth();
 
-    // 2. Elan Yerləşdir Düyməsi Auth Yoxlaması
-    const adPostBtn = document.querySelector('.ad-post-btn');
-    if (adPostBtn) {
-        adPostBtn.addEventListener('click', (e) => {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                e.preventDefault();
-                window.location.href = 'register.html';
-            }
-        });
-    }
-
-    // 3. LocalStorage-dan elanları yükləyib göstərmək
+    // 2. Render Ads
     const renderAds = () => {
-        try {
-            const adsContainer = document.querySelector('.ads-grid');
-            if (!adsContainer) return;
+        const adsContainer = document.getElementById('ads-container');
+        if (!adsContainer) return;
 
-            let storedAds = [];
-            try {
-                const data = localStorage.getItem('ads');
-                storedAds = data ? JSON.parse(data) : [];
-            } catch (e) {
-                console.error("Ads parse error:", e);
-                storedAds = [];
-            }
+        let ads = JSON.parse(localStorage.getItem('ads')) || [];
 
-            // Default ads patterns if empty
-            if (!storedAds || !Array.isArray(storedAds) || storedAds.length === 0) {
-                storedAds = [
-                    { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                    { id: 2, title: 'Mercedes W211 Ön Bufer', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                    { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
-                    { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' }
-                ];
-                localStorage.setItem('ads', JSON.stringify(storedAds));
-            }
+        // If no ads, show some defaults so it looks good
+        if (ads.length === 0) {
+            ads = [
+                { id: 1, title: 'BMW E60 Mühərrik Yastığı (M-Tech)', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=500&auto=format&fit=crop', status: 'active' },
+                { id: 2, title: 'Mercedes W211 Ön Bufer (Yeni)', price: 350, image: 'https://images.unsplash.com/photo-1600320254378-01e4a2dc98cc?w=500&auto=format&fit=crop', status: 'active' },
+                { id: 3, title: 'Mercedes W222 Multi-Beam LED Faralar', price: 7980, image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=500&auto=format&fit=crop', status: 'active' },
+                { id: 4, title: 'Toyota Land Cruiser Su Nasosu (OEM)', price: 3550, image: 'https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&auto=format&fit=crop', status: 'active' }
+            ];
+            localStorage.setItem('ads', JSON.stringify(ads));
+        }
 
-            adsContainer.innerHTML = '';
+        adsContainer.innerHTML = '';
 
-            const activeAds = storedAds.filter(ad => ad && ad.status === 'active');
+        const activeAds = ads.filter(a => a.status === 'active');
 
-            if (activeAds.length === 0) {
-                adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Hələ ki, aktiv elan yoxdur.</p>';
-                return;
-            }
+        if (activeAds.length === 0) {
+            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">Hazırda heç bir elan tapılmadı.</p>';
+            return;
+        }
 
-            activeAds.reverse().forEach(ad => {
-                const adHTML = `
-                    <article class="product-card">
-                        <div class="product-img-wrapper">
-                            <img src="${ad.image || ''}" alt="${ad.title || 'Elan'}" class="product-img" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
+        // Show newest ads first
+        [...activeAds].reverse().forEach(ad => {
+            const adHTML = `
+                <article class="ad-card">
+                    <div class="ad-image-wrapper">
+                        <img src="${ad.image || 'https://placehold.co/400x300?text=Şəkil+Yoxdur'}" alt="${ad.title}" class="ad-image" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
+                        <div class="ad-price">${ad.price} ₼</div>
+                    </div>
+                    <div class="ad-content">
+                        <h3 class="ad-title">${ad.title}</h3>
+                        <div class="ad-footer">
+                            <span><i class="fa-solid fa-location-dot"></i> Bakı</span>
+                            <button class="btn-contact"><i class="fa-solid fa-phone"></i></button>
                         </div>
-                        <div class="product-info">
-                            <div class="product-price">${ad.price || 0} ₼</div>
-                            <h3 class="product-name">${ad.title || 'Adsız Elan'}</h3>
-                            <div class="product-footer">
-                                <span class="loc">Bakı, bugün</span>
-                                <button class="btn-call-cirle">
-                                    <i class="fa-solid fa-phone"></i>
-                                </button>
+                    </div>
+                </article>
+            `;
+            adsContainer.insertAdjacentHTML('beforeend', adHTML);
+        });
+    };
+
+    renderAds();
+
+    // 3. Search functionality (Simple filter for demo)
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.querySelector('.btn-search');
+
+    const handleSearch = () => {
+        const query = searchInput.value.toLowerCase().trim();
+        if (!query) {
+            renderAds();
+            return;
+        }
+
+        const ads = JSON.parse(localStorage.getItem('ads')) || [];
+        const filtered = ads.filter(ad =>
+            ad.status === 'active' &&
+            (ad.title.toLowerCase().includes(query) || (ad.category && ad.category.toLowerCase().includes(query)))
+        );
+
+        const adsContainer = document.getElementById('ads-container');
+        adsContainer.innerHTML = '';
+
+        if (filtered.length === 0) {
+            adsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">Axtarışa uyğun nəticə tapılmadı.</p>';
+        } else {
+            [...filtered].reverse().forEach(ad => {
+                // ... same adHTML as above (could be refactored) ...
+                const adHTML = `
+                    <article class="ad-card">
+                        <div class="ad-image-wrapper">
+                            <img src="${ad.image || ''}" alt="${ad.title}" class="ad-image" onerror="this.src='https://placehold.co/400x300?text=Şəkil+Yoxdur'">
+                            <div class="ad-price">${ad.price} ₼</div>
+                        </div>
+                        <div class="ad-content">
+                            <h3 class="ad-title">${ad.title}</h3>
+                            <div class="ad-footer">
+                                <span><i class="fa-solid fa-location-dot"></i> Bakı</span>
+                                <button class="btn-contact"><i class="fa-solid fa-phone"></i></button>
                             </div>
                         </div>
                     </article>
                 `;
                 adsContainer.insertAdjacentHTML('beforeend', adHTML);
             });
-        } catch (e) {
-            console.error("Render error:", e);
         }
     };
 
-    renderAds();
+    if (searchBtn) searchBtn.addEventListener('click', handleSearch);
+    if (searchInput) searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSearch();
+    });
 
-    // 4. Hero Reveal (Still keeping the text reveal as it's not "parallax")
-    const heroItems = document.querySelectorAll('.hero-reveal-item');
-    setTimeout(() => {
-        heroItems.forEach(item => {
-            item.classList.add('revealed');
-        });
-    }, 100);
-
-    // Mouse Parallax and Scroll Parallax REMOVED as requested
 });
