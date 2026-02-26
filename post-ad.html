@@ -47,9 +47,6 @@
 </head>
 
 <body style="background: #f8fafc;">
-    <!-- Parallax Background Elements -->
-    <div class="parallax-blob blob-1"></div>
-    <div class="parallax-blob blob-2"></div>
 
     <div class="container">
         <div class="post-ad-container hero-reveal-item revealed">
@@ -237,15 +234,6 @@
             window.location.href = '/';
         });
 
-        // Simple mouse parallax for blobs
-        document.addEventListener('mousemove', (e) => {
-            const blobs = document.querySelectorAll('.parallax-blob');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            blobs.forEach((blob, i) => {
-                blob.style.transform = `translate(${x * (i + 1) * 30}px, ${y * (i + 1) * 30}px)`;
-            });
-        });
     </script>
 </body>
 
