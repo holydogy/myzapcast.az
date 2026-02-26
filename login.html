@@ -113,10 +113,30 @@
     </div>
 
     <script>
-        document.getElementById('user-login-form').addEventListener('submit', (e) => {
+        document.getElementById('user-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-password').value;
+
+            // Try API login
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password: pass })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    window.location.href = '/';
+                    return;
+                }
+            } catch (err) {
+                console.warn('API login failed, checking local users:', err);
+            }
+
+            // Fallback to local
             const users = JSON.parse(localStorage.getItem('users')) || [];
             const user = users.find(u => u.email === email && u.password === pass);
 

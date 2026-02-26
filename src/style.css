@@ -162,6 +162,20 @@ body {
     text-transform: uppercase;
 }
 
+/* Fallback for broken logo image */
+.logo-img[src=""],
+.logo-img:not([src]) {
+    display: none;
+}
+
+.logo-container:has(.logo-img[src=""])::after,
+.logo-container:has(.logo-img:not([src]))::after {
+    content: 'MYZAPCAST';
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
 .nav-links {
     display: flex;
     gap: 2.5rem;
@@ -663,12 +677,39 @@ body.dark-mode .toast {
     }
 
     .nav-actions {
-        gap: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* Reduced gap for mobile to prevent overflow */
+        flex-shrink: 0;
+    }
+
+    .top-nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 100vw;
+    }
+
+    .nav-left-group {
+        display: flex;
+        align-items: center;
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    .logo-container {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .mobile-menu-btn {
         display: block;
         padding: 0.25rem;
+        font-size: 1.4rem;
+        margin-left: 0.25rem;
     }
 
     .logo-img {

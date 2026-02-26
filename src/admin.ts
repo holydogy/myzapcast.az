@@ -1,3 +1,4 @@
+import { API_URL } from './apiConfig';
 import type { Ad, User, AdminUser } from './types';
 
 // LocalStorage-da məlumatları saxlayırıq
@@ -28,10 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Admin Giriş Formu
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const user = (document.getElementById('admin-user') as HTMLInputElement).value;
             const pass = (document.getElementById('admin-pass') as HTMLInputElement).value;
+
+            try {
+                // Try API login first
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: user, password: pass })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    showAdminPanel();
+                    return;
+                }
+            } catch (err) {
+                console.warn('API login failed, falling back to local check:', err);
+            }
 
             // İstənilən admın ilə giriş yoxlanılır
             const foundAdmin = admins.find(a => a.user === user && a.pass === pass);

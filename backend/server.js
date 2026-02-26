@@ -9,7 +9,10 @@ const app = express();
 // Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(cors());
+app.use(cors({
+    origin: true, // Allow any origin that Vite/Vercel uses
+    credentials: true
+}));
 
 // Serve Static Files (Uploads)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -26,11 +29,11 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'OK', message: 'Server işləyir' });
 });
 
-// Import Routes (To be implemented)
-// const authRoutes = require('./routes/authRoutes');
+// Import Routes
+const authRoutes = require('./routes/authRoutes');
 // const adRoutes = require('./routes/adRoutes');
 
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api/ads', adRoutes);
 
 // Error Handling Middleware
