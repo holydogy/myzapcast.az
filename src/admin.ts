@@ -36,31 +36,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelModal = document.getElementById('cancel-modal');
     const modalTitle = document.getElementById('modal-title');
 
-    // Auth Tabs Switching
-    const tabLogin = document.getElementById('tab-login');
-    const tabRegister = document.getElementById('tab-register');
-    const registerForm = document.getElementById('admin-register-form') as HTMLFormElement | null;
+    // Mobile Sidebar Elements
+    const openSidebarBtn = document.getElementById('open-sidebar');
+    const closeSidebarBtn = document.getElementById('close-sidebar');
+    const adminSidebar = document.getElementById('admin-sidebar');
 
-    tabLogin?.addEventListener('click', () => {
-        if (loginForm) loginForm.style.display = 'block';
-        if (registerForm) registerForm.style.display = 'none';
-        tabLogin.style.borderBottom = '2px solid var(--primary)';
-        tabLogin.style.color = 'var(--primary)';
-        if (tabRegister) {
-            tabRegister.style.borderBottom = 'none';
-            tabRegister.style.color = '#64748b';
-        }
+    openSidebarBtn?.addEventListener('click', () => {
+        adminSidebar?.classList.add('mobile-active');
     });
 
-    tabRegister?.addEventListener('click', () => {
-        if (loginForm) loginForm.style.display = 'none';
-        if (registerForm) registerForm.style.display = 'block';
-        tabRegister.style.borderBottom = '2px solid var(--primary)';
-        tabRegister.style.color = 'var(--primary)';
-        if (tabLogin) {
-            tabLogin.style.borderBottom = 'none';
-            tabLogin.style.color = '#64748b';
-        }
+    closeSidebarBtn?.addEventListener('click', () => {
+        adminSidebar?.classList.remove('mobile-active');
     });
 
     // Admin Giriş Formu
@@ -117,30 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Admin Qeydiyyat Formu
-    if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const user = (document.getElementById('reg-admin-user') as HTMLInputElement).value;
-            const pass = (document.getElementById('reg-admin-pass') as HTMLInputElement).value;
-            const passConfirm = (document.getElementById('reg-admin-pass-confirm') as HTMLInputElement).value;
-
-            if (pass !== passConfirm) {
-                alert('Şifrələr eyni deyil!');
-                return;
-            }
-
-            if (admins.some(a => a.user === user)) {
-                alert('Bu istifadəçi adı artıq tutulub!');
-                return;
-            }
-
-            admins.push({ user, pass });
-            localStorage.setItem('allAdmins', JSON.stringify(admins));
-            alert('Admin uğurla qeydiyyatdan keçdi! İndi daxil ola bilərsiniz.');
-            tabLogin?.click();
-        });
-    }
+    // Registration logic removed
 
     // Logout
     if (logoutBtn) {
@@ -232,10 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Əgər admin daxil olubsa
-    if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-        showAdminPanel();
-    }
+    // Always show login section first as per request
+    if (loginSection) loginSection.style.display = 'flex';
+    if (adminLayout) adminLayout.style.display = 'none';
 
     function showAdminPanel() {
         if (loginSection) loginSection.style.display = 'none';
