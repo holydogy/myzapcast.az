@@ -1,6 +1,13 @@
 import { API_URL } from './apiConfig';
 import type { Ad, User, AdminUser } from './types';
 
+interface SystemLog {
+    user: string;
+    timestamp: string;
+    ip: string;
+    userAgent: string;
+}
+
 // LocalStorage-da məlumatları saxlayırıq
 let ads: Ad[] = JSON.parse(localStorage.getItem('ads') || '[]') || [
     { id: 1, title: 'BMW E60 Mühərrik Yastığı', price: 150, image: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=400&h=300&auto=format&fit=crop', status: 'active' },
@@ -14,6 +21,8 @@ let admins: AdminUser[] = JSON.parse(localStorage.getItem('allAdmins') || '[]') 
     { user: 'admin', pass: 'toghruladmin123' }
 ];
 
+let systemLogs: SystemLog[] = JSON.parse(localStorage.getItem('systemLogs') || '[]') || [];
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginSection = document.getElementById('login-section');
     const adminLayout = document.getElementById('admin-layout');
@@ -26,6 +35,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const addAdBtn = document.getElementById('add-ad-btn');
     const cancelModal = document.getElementById('cancel-modal');
     const modalTitle = document.getElementById('modal-title');
+
+    // Auth Tabs Switching
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const registerForm = document.getElementById('admin-register-form') as HTMLFormElement | null;
+
+    tabLogin?.addEventListener('click', () => {
+        if (loginForm) loginForm.style.display = 'block';
+        if (registerForm) registerForm.style.display = 'none';
+        tabLogin.style.borderBottom = '2px solid var(--primary)';
+        tabLogin.style.color = 'var(--primary)';
+        if (tabRegister) {
+            tabRegister.style.borderBottom = 'none';
+            tabRegister.style.color = '#64748b';
+        }
+    });
+
+    tabRegister?.addEventListener('click', () => {
+        if (loginForm) loginForm.style.display = 'none';
+        if (registerForm) registerForm.style.display = 'block';
+        tabRegister.style.borderBottom = '2px solid var(--primary)';
+        tabRegister.style.color = 'var(--primary)';
+        if (tabLogin) {
+            tabLogin.style.borderBottom = 'none';
+            tabLogin.style.color = '#64748b';
+        }
+    });
 
     // Admin Giriş Formu
     if (loginForm) {
@@ -57,11 +93,52 @@ document.addEventListener('DOMContentLoaded', () => {
             const foundAdmin = admins.find(a => a.user === user && a.pass === pass);
 
             if (foundAdmin) {
+                // Log the login
+                try {
+                    const ipRes = await fetch('https://api.ipify.org?format=json');
+                    const ipData = await ipRes.json();
+                    const newLog: SystemLog = {
+                        user: user,
+                        timestamp: new Date().toLocaleString('az-AZ'),
+                        ip: ipData.ip || 'Naməlum',
+                        userAgent: navigator.userAgent
+                    };
+                    systemLogs.unshift(newLog);
+                    localStorage.setItem('systemLogs', JSON.stringify(systemLogs));
+                } catch (err) {
+                    console.warn('IP logging failed:', err);
+                }
+
                 localStorage.setItem('isAdminLoggedIn', 'true');
                 showAdminPanel();
             } else {
                 alert('Yanlış admin adı və ya şifrə!');
             }
+        });
+    }
+
+    // Admin Qeydiyyat Formu
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = (document.getElementById('reg-admin-user') as HTMLInputElement).value;
+            const pass = (document.getElementById('reg-admin-pass') as HTMLInputElement).value;
+            const passConfirm = (document.getElementById('reg-admin-pass-confirm') as HTMLInputElement).value;
+
+            if (pass !== passConfirm) {
+                alert('Şifrələr eyni deyil!');
+                return;
+            }
+
+            if (admins.some(a => a.user === user)) {
+                alert('Bu istifadəçi adı artıq tutulub!');
+                return;
+            }
+
+            admins.push({ user, pass });
+            localStorage.setItem('allAdmins', JSON.stringify(admins));
+            alert('Admin uğurla qeydiyyatdan keçdi! İndi daxil ola bilərsiniz.');
+            tabLogin?.click();
         });
     }
 
@@ -172,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAds();
         renderUsers();
         renderAdmins();
+        renderLogs();
     }
 
     // Naviqasiya
@@ -184,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
 
-                const sections = ['dashboard', 'ads', 'users', 'admins', 'categories', 'settings'];
+                const sections = ['dashboard', 'ads', 'users', 'admins', 'categories', 'settings', 'logs'];
                 sections.forEach(s => {
                     const el = document.getElementById(`section-${s}`);
                     if (el) el.style.display = s === section ? 'block' : 'none';
@@ -205,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     renderAds();
                     renderUsers();
                     renderAdmins();
+                    renderLogs();
                     updateStats();
                 }
             }
@@ -415,6 +494,33 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStats();
         }
     };
+
+    function renderLogs() {
+        const tbody = document.getElementById('logs-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        systemLogs.forEach(log => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:700; color:var(--primary);">${log.user}</td>
+                <td style="font-size:0.85rem;">${log.timestamp}</td>
+                <td style="font-family:monospace; background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:0.8rem;">${log.ip}</td>
+                <td style="font-size:0.75rem; color:#64748b; max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${log.userAgent}">${log.userAgent}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    const clearLogsBtn = document.getElementById('clear-logs-btn');
+    if (clearLogsBtn) {
+        clearLogsBtn.addEventListener('click', () => {
+            if (confirm('Bütün logları təmizləmək istəyirsiniz?')) {
+                systemLogs = [];
+                localStorage.setItem('systemLogs', JSON.stringify(systemLogs));
+                renderLogs();
+            }
+        });
+    }
 
     function saveToStorage() {
         localStorage.setItem('ads', JSON.stringify(ads));

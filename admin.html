@@ -15,8 +15,15 @@
     <!-- Login Section -->
     <div id="login-section" class="auth-container">
         <div class="auth-card">
-            <h2 style="margin-bottom: 0.5rem; text-align: center;">Xoş Gəlmisiniz 👋</h2>
-            <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Admin panelə daxil olun</p>
+            <div class="auth-tabs"
+                style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid #f1f5f9;">
+                <button id="tab-login" class="tab-btn active"
+                    style="flex: 1; padding: 0.75rem; border: none; background: none; font-weight: 700; cursor: pointer; border-bottom: 2px solid var(--primary); color: var(--primary);">Daxil
+                    ol</button>
+                <button id="tab-register" class="tab-btn"
+                    style="flex: 1; padding: 0.75rem; border: none; background: none; font-weight: 700; cursor: pointer; color: #64748b;">Qeydiyyat</button>
+            </div>
+
             <form id="login-form" autocomplete="off">
                 <div class="form-group">
                     <label>Admin adı</label>
@@ -29,6 +36,24 @@
                         autocomplete="new-password">
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%;">Daxil ol</button>
+            </form>
+
+            <form id="admin-register-form" style="display: none;" autocomplete="off">
+                <div class="form-group">
+                    <label>Yeni Admin adı</label>
+                    <input type="text" id="reg-admin-user" class="form-input" placeholder="Seçdiyiniz ad" required>
+                </div>
+                <div class="form-group">
+                    <label>Şifrə</label>
+                    <input type="password" id="reg-admin-pass" class="form-input" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label>Şifrəni təkrarla</label>
+                    <input type="password" id="reg-admin-pass-confirm" class="form-input" placeholder="••••••••"
+                        required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; background: #10b981;">Qeydiyyatdan
+                    keç</button>
             </form>
         </div>
     </div>
@@ -63,6 +88,11 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="categories">
                         <i class="fa-solid fa-tags"></i> Kateqoriyalar
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="logs">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Sistem Logları
                     </a>
                 </li>
                 <li class="nav-item">
@@ -204,6 +234,30 @@
                         <h2>Kateqoriyaların İdarəedilməsi</h2>
                     </div>
                     <p style="color: var(--text-muted);">Tezliklə...</p>
+                </div>
+            </div>
+
+            <!-- Logs Content -->
+            <div id="section-logs" style="display: none;">
+                <div class="data-table-container">
+                    <div class="table-header">
+                        <h2>Sistem Giriş Logları</h2>
+                        <button id="clear-logs-btn" class="btn-action" style="color: #ef4444; border-color: #ef4444;"><i
+                                class="fa-solid fa-trash-can"></i> Təmizlə</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>İstifadəçi</th>
+                                <th>Tarix/Saat</th>
+                                <th>IP Ünvanı</th>
+                                <th>Cihaz/Brauzer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body">
+                            <!-- JS ilə doldurulacaq -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
