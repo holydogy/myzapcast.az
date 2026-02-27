@@ -324,6 +324,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Protected Links Check
+    document.querySelectorAll('a[href="post-ad.html"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const userJson = localStorage.getItem('currentUser');
+            if (!userJson) {
+                e.preventDefault();
+                window.location.href = 'register.html';
+            }
+        });
+    });
+
     // Initialize Page
     updateLanguage(currentLang);
 });

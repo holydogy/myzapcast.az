@@ -652,9 +652,12 @@ body.dark-mode .btn-call-circle {
 
     .lang-switcher {
         display: flex;
-        padding: 0.4rem 0.6rem;
-        font-size: 0.75rem;
-        gap: 0.35rem;
+        height: 42px;
+        padding: 0 0.85rem;
+        font-size: 0.85rem;
+        gap: 0.5rem;
+        border-radius: var(--radius-full);
+        align-items: center;
     }
 
     .mobile-menu-btn {
@@ -730,7 +733,7 @@ body.dark-mode .btn-call-circle {
     }
 
     .logo-text {
-        font-size: 1.15rem;
+        font-size: 1.5rem;
     }
 
     .filter-item-small.condition-toggle {
@@ -782,7 +785,7 @@ body.dark-mode .btn-call-circle {
     }
 
     .logo-text {
-        font-size: 1rem;
+        font-size: 1.35rem;
     }
 
     .hero h1 {
