@@ -213,6 +213,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
+     * Search Condition Toggle
+     */
+    const condBtns = document.querySelectorAll('.cond-btn');
+    condBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            condBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    /**
      * 4. Language Switcher Logic
      */
     const langSwitcher = document.getElementById('lang-switcher');

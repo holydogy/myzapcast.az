@@ -20,6 +20,7 @@
 }
 
 body {
+    color-scheme: dark;
     background-color: var(--bg-color);
     color: var(--text-primary);
     font-family: 'Inter', sans-serif;

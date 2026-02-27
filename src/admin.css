@@ -22,6 +22,12 @@ body {
     color: var(--text-main);
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        color-scheme: dark;
+    }
+}
+
 /* Authentication Section */
 .auth-container {
     height: 100vh;
@@ -280,6 +286,18 @@ td {
 .form-input:focus {
     border-color: var(--primary);
     background: white;
+}
+
+select.form-input option {
+    background-color: white;
+    color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    select.form-input option {
+        background-color: #1e293b;
+        color: white;
+    }
 }
 
 /* Modal Styling */

@@ -28,6 +28,7 @@
 }
 
 body {
+    color-scheme: dark;
     background-color: var(--bg-main);
     color: var(--text-main);
     overflow-x: hidden;
@@ -233,6 +234,11 @@ header {
     font-weight: 600;
     outline: none;
     cursor: pointer;
+}
+
+.filter-select option {
+    background-color: var(--card-bg);
+    color: var(--text-main);
 }
 
 /* --- Category Grid --- */

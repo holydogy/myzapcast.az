@@ -18,13 +18,11 @@
         <div class="container top-nav-container">
             <div class="nav-left-group">
                 <a href="/" class="logo-container">
-                    <img src="./logo.png" alt="MYZAPCAST" class="logo-img"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('logo-fallback');">
+                    <span class="logo-text">MYZAPCAST</span>
                 </a>
             </div>
 
             <nav class="nav-links">
-                <a href="/" class="nav-link" data-i18n="nav_home">Ana Səhifə</a>
                 <a href="/parts.html" class="nav-link" data-i18n="nav_parts">Ehtiyat Hissələri</a>
                 <a href="/shops.html" class="nav-link" data-i18n="nav_shops">Mağazalar</a>
                 <a href="/about.html" class="nav-link" data-i18n="nav_about">Haqqımızda</a>
@@ -52,7 +50,7 @@
                     <a href="/register.html" class="btn-register" data-i18n="auth_register">Hesab yarat</a>
                 </div>
 
-                <!-- Mobile Menu Button moved here -->
+                <!-- Mobile Menu Button -->
                 <button class="mobile-menu-btn" id="mobile-menu-btn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -78,23 +76,46 @@
                     <div class="filter-item-small">
                         <i class="fa-solid fa-car" style="color: var(--primary);"></i>
                         <select id="filter-make">
-                            <option value="" data-i18n="make_all">Marka (Hamısı)</option>
+                            <option value="">Marka (Hamısı)</option>
                             <option>BMW</option>
                             <option>Mercedes</option>
                             <option>Toyota</option>
+                            <option>Audi</option>
                         </select>
                     </div>
                     <div class="filter-item-small">
                         <i class="fa-solid fa-microchip" style="color: var(--primary);"></i>
-                        <input type="text" id="filter-model" placeholder="Model (Məs: F30)"
-                            data-i18n-placeholder="model_placeholder">
+                        <input type="text" id="filter-model" placeholder="Model">
+                    </div>
+                    <div class="filter-item-small condition-toggle">
+                        <button class="cond-btn active">Hamısı</button>
+                        <button class="cond-btn">Yeni</button>
+                        <button class="cond-btn">İşlənmiş</button>
                     </div>
                     <div class="filter-item-small">
-                        <i class="fa-solid fa-tag" style="color: var(--primary);"></i>
-                        <input type="number" id="filter-price" placeholder="Maks. Qiymət"
-                            data-i18n-placeholder="price_placeholder">
+                        <i class="fa-solid fa-city" style="color: var(--primary);"></i>
+                        <select id="filter-city">
+                            <option value="">Şəhər (Hamısı)</option>
+                            <option>Bakı</option>
+                            <option>Sumqayıt</option>
+                            <option>Gəncə</option>
+                        </select>
                     </div>
-                    <button class="btn-hero-search-new" id="search-btn" data-i18n="search_btn">AXTAR</button>
+
+                    <div class="filter-item-small">
+                        <i class="fa-solid fa-tag" style="color: var(--primary);"></i>
+                        <input type="number" id="filter-price" placeholder="Qiymət">
+                    </div>
+                    <div class="filter-item-small">
+                        <i class="fa-solid fa-money-bill-wave" style="color: var(--primary);"></i>
+                        <select id="filter-currency">
+                            <option>AZN</option>
+                            <option>USD</option>
+                            <option>EUR</option>
+                        </select>
+                    </div>
+                    <button class="btn-hero-search-new" id="search-btn" data-i18n="search_btn"
+                        style="grid-column: span 2;">AXTAR</button>
                 </div>
             </div>
         </div>
@@ -148,7 +169,6 @@
             </div>
 
             <div class="ads-grid" id="ads-container">
-                <!-- JS will populate this -->
                 <p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">Elanlar
                     yüklənir...</p>
             </div>
@@ -163,8 +183,6 @@
             <button class="sidebar-close" id="sidebar-close">&times;</button>
         </div>
         <nav class="sidebar-links">
-            <a href="/" class="sidebar-link"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Ana
-                    Səhifə</span></a>
             <a href="/parts.html" class="sidebar-link"><i class="fa-solid fa-gear"></i> <span
                     data-i18n="nav_parts">Ehtiyat Hissələri</span></a>
             <a href="/shops.html" class="sidebar-link"><i class="fa-solid fa-store"></i> <span
